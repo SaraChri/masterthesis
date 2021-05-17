@@ -1,0 +1,149 @@
+---
+title: "tables"
+output:
+  pdf_document: null
+  html_document: default
+  word_document: default
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE,}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, results = "asis", error = FALSE)
+```
+
+```{r table nutrition, echo = FALSE}
+library(knitr)
+library(rmarkdown)
+library(tidyverse)
+library(readxl)
+library(tinytex)
+library(broom) 
+library(lme4)
+library(lmerTest)
+library(emmeans)
+library(ggplot2)
+library(ggpubr)
+
+
+```
+
+
+kg fra dxa - inner_join(dxadata) under nutrition %>%
+
+```{r table dxa, echo = FALSE}
+
+#descriptive subject info, in group by sex
+
+dxa_table1 <- readRDS(file = "./data/derdata/analysis_dxa/dxatable.RDS") %>%
+        print()
+
+dxa_table1 %>%
+  kable()
+
+#descriptibe subject info pr leg.
+dxa_table2 <- readRDS(file = "./data/derdata/analysis_dxa/dxalegtable.RDS") %>%
+  print()
+
+dxa_table2 %>%
+  kable()
+     
+
+
+```
+
+nutrition table with pro pr kg pr bw
+```{r nuttable, echo = FALSE}
+#nutrition table with mean +sd pro pr kg bodyweight pr group
+#nutritiontable with pro.pr kg bodyweight pr. group
+
+nutable2 <-readRDS(file = "./data/derdata/analysis_nutrition/nuttable.RDS") #%>%
+        #print()
+
+#Table
+nutable2 %>%
+        kable()
+
+```
+ 
+ Session score and RPE and traning table
+```{r training table, echo = FALSE}
+#training table of lp.volume, ke.volume and rpe, mean, sd between groups and timepoint (paired)
+
+tr.table <- readRDS(file = "./data/derdata/analysis_training/traing_table.RDS") %>%
+  print()
+
+tr.table %>%
+        kable() %>%
+  print()
+
+#Session score table
+
+sctable <- readRDS(file = "./data/derdata/analysis_training/sctable.RDS") %>%
+  kable()
+        #kable_styling(bootstrap_options = c("Striped", "hover", "condensed"), full_width = FALSE) %>%
+
+totalvolumefigure <- readRDS("./data/derdata/analysis_training/totvolumefigure.RDS") %>%
+  print()
+
+
+```
+
+Total volume line plot. mean between groups, sd through timepoint.
+```{r, tot.vol line plot, Echo = FALSE, warning=FALSE}
+
+#total volume lilneplot
+#this one is to be used.
+readRDS("./data/derdata/analysis_training/totvol_lineplot")
+
+#Total volume total and fold change
+
+
+```
+
+glucose during T3 and T4
+```{r, echo=FALSE}
+#mean change between groups
+#hange pr. timepoint
+#fold change?
+
+readRDS("./data/derdata/analysis_training/glutotalplot.RDS")
+
+glucoseonefigure3 <- readRDS("./data/derdata/analysis_training/glucosefigure_ab.RDS") %>%
+  print()
+
+
+```
+
+Humac 
+
+```{r humac results, echo=FALSE}
+#isokinetisk og isometrisk.
+
+#fold change time effect
+
+figure5 <- readRDS("./data/derdata/analysis_training/humactimefig.RDS") %>%
+  print()
+
+isopostfig <- readRDS("./data/derdata/analysis_training/isopostchange.RDS") %>%
+  print()
+```
+
+
+
+
+Protein analysis from pre-post
+```{r protein figure, echo=FALSE}
+#change from pre to post in a plot
+#fold change?
+# mean diff bewteen groups
+#
+
+figrue7 <- readRDS("./data/derdata/analysis_murf/murffigures.RDS") %>%
+  print()
+
+```
+
+
+ 
+ 

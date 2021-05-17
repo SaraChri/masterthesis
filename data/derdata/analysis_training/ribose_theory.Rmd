@@ -1,0 +1,329 @@
+---
+title: "Ribose Protein"
+author: "Sara"
+date: '2021-02-23'
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+
+
+```
+
+
+
+
+```{r packages, include=FALSE}
+library(tidyverse)
+library(readxl)
+library(readr)
+library(tinytex)
+library(tidyr)
+library(knitr)
+library(broom)
+library(arsenal) 
+library(lme4)
+library(dplyr)
+library(lmerTest)
+library(rmarkdown)
+library(emmeans)
+
+
+``` 
+
+### Abstract
+
+The purpose of this study was to the effects of fluid glucose intake during Resistance exercise on protein degradation after 6 traning sessions. 
+
+# 1. Theory
+
+### 1 Resistance exercise
+
+### 2 Proteins
+
+Our knowledge about muscle growth is widely studied and protein supplementations have a lot of positive properties for muscle adaption (Tipton, Ferrando, Phillips, Doule Jr, Wolfe, 1999). Resistance exercise alone can lead to muscle hypertrophy and greater post-exercise MPS and the human body always control the proteins content, and the cells can make new or degrade proteins (Schoenfeld, Ogborn, Krieger, 2017, Levers, K., Vargo, K., 2015, Silverthorn, 2019). Proteins are essential for the human body and can be specialized to function in a specific way, speed up chemical reaction and give signals to the cells (Silverthorn, 2019). Proteins influence the cells mechanical properties and structure, and have the ability to compliance, elastance, strength, flexibility and fluidity (Silverthorn, 2019). When ingested, free amino acids are taken up by the liver to create structural or functional proteins structures (Silverthorn, 2019). It was believed that timing of protein ingestion was crucial for preventing protein breakdown, and to get the most out of nutrition, but when the total amount of free amino acids exceeds the body’s ability for protein syntheses, the excess amino acids are either stores as fat, or used as an energy source (Levers, K., Vargo, K., 2015, Silverthorne, 2019). The purpose of degrading proteins are the mechanism for breaking down proteins (Silverthorn, 2019) The regulation of protein concentration is important for physiological adaption, and muscle protein syntheses (MPS) and muscle protein breakdown (MPB) is affected by each other (Silverthorn, 2019). If the total amount of free amino acids in the human body exceeds MPB, accumulation of proteins accrue and MPB is less needed to make new proteins. If the total amount of free amino acids is less than the rate of MPS, the breakdown of proteins are needed and MPS rate exceeds MPS (Silverthorne, 2019). So how does this happen?
+
+Hypertrophy is the increase of strength and lean mass in skeletal muscle (Levers, K., Vargo, K., 2015). Resistance exercise alone can lead to muscle hypertrophy and impact both MPS and MPB (Levers, K., Vargo, K., 2015). Insulin is important for free amino acids transport to skeletal muscle and can minimizing the breakdown of muscle protein (Levers, K., Vargo, K., 2015). Ingestion of glucose surrounding an exercise session will increase plasma insulin levels and the transport rate of free amino acids, and prevent muscle protein breakdown (Levers, K., Vargo, K., 2015). It is also important to clarify that MPB can only be influenced by carbohydrates when it is ingested with proteins to maintain a positive net protein balance (Levers, K., Vargo, K., 2015). Although ingestion of carbohydrate supplement with protein supplement does not improve MPS further than ingestion of protein supplements alone (Levers, K., Vargo, K., 2015 + flere kider). The main role of carbohydrate surrounding resistance exercise is replenish glycogen stores, prevent MPB and increase insulin levels (Levers, K., Vargo, K., 2015).  
+
+### 3. Mechanisme of protein degrading
+
+### 3.1 Skeletal muscle protein degradation
+
+Proteolysis is the regulation of total protein content in a living organism (Alberts, et al. 2019; MacArdle, Katch, Katch, 2015; Silverthorn, 2019). In science, proteolysis is often overlooked, but is a fundamental biological process that provides amino acids for synthesis to vital organs, tissue, repairing and remodeling (Alberts, et al. 2019; Pasiakos, Carbone, 2014). Proteases is the enzymes that control proteolysis, which hydrolyze peptide bonds, splitting them into smaller chains and then into individual amino acids (Alberts, et al. 2019; McArdle, Katch, Katch, 2015). Proteasome is the protein complex that degrades proteins (Alberts, et al. 2019). Proteasome is in the cytosol and nucleus within the cell, in a cylindric form made from proteases (Alberts, et al. 2019).  The ends of the cylinder unfold proteins complexes marked for degradation by ubiquitin, transports them into the inner chamber where proteases cut them into short peptides and shoots them out of either sides of the proteasome (Alberts, et al. 2019).   The process of breaking down proteins can take from seconds and minutes, or months and years, depending on where the proteins are contributed (Alberts, et al. 2019; McArdle, Katch Katch, 2015). 
+
+### 3.2 Ubiquination 
+
+Skeletal muscle protein degrading is regulated by primary by the ubiquitin proteasome pathway (UPS) (Myung, Kim, Crews, 2001). The UPS is a target protein and the major pathway of selective protein degradation in skeletal muscle (McArdle, Katch, Katch, 2015; Myung, Kim, Crews, 2001). The ubiquitin function as a marker that target cytosolic and nuclear proteins for rapid protelysis (KILDE). When a protein is tagged with ubiquitin, the ubiquinated protein enters protasome and degrades into smaller peptide units (McArdle, Katch, Katch, 2015). When a protein is set for degrading, the ubiquitin conjugating cascade (carboxyl group of Gly-76) is activated by ubiquitin-activating enzyme E1 (Myung, Kim, Crews, 2001). The activated ubiquitin is transferred to a thiol group of an activated site Cys residue E2 by transacylation reaction (Myung, Kim, Crews, 2001). Then the ubiquitin festes to protein substrate directly by itself with E2 or together with ubiquitin ligases, (E3 Myung, Kim, Crews, 2001).
+
+Ubiquitin are added to for a multiubiquitin chain and the polyubiquinated proteins are then recognized and degraded by proteasome, a mulisubunit rotease complex (KILDE) The ubiquitin is released in the process so it can be reused (KILDE).
+
+
+### 4. Nutrition supplement and exercise
+
+Dietary supplements are sold and consumed all over the world. Protein supplements has shown to enhance MPS (KILDE). 
+
+Studies on CHO and protein degradataion. 
+Protein synthesis remain unchanged when co-ingested CHO and EAA before strength exercise, compared with group in fasted state (Fujita, et al. 2009). Co-ingestion of CHO and EAA  raises the plasma insulin concentration, but it does not further MPS during recovery (Koopman, et al. 2007).
+On untrained men, ingestion of liquid carbohydrate (CHO) and essential amino acids (EAA) has been shown to attenuate protein degradation in myofibrillas, when ingested between exercise sets (Bird, S. P., Tarpenning, K. M., Marino, F. E., 2006). Strength exercise has also proven to give higher rate of AA transport during strength exercise when co-ingestion of CHO and EAA (Biolo, G., Williams, B. D., Fleming, R. Y., Wolfe, R. R., 1999).
+In Beelan et al. (2008) study, the subject was tested on co ingestion of proteins and carbohydrates during exercise under normal nutritional condition. The subject had a standardized meal the evening before training session to ensure normal protein ingestion (Beelan, et al. 2008). Co-ingestion of proteins supplement with carbohydrates improves whole body protein synthesis and lowers the rate of protein breakdown rates by 8.4%, compared with ingestion of carbohydrates only (Beelen, et al. 2008).
+
+### 5. Health and protein degradation
+
+### 6. Introducion
+
+There is an understanding that muscle protein synthesis (MPS) and muscle protein breakdown (MPB) 
+
+## 7.Method
+
+### 7.1 Study overview
+
+In this randomized interventional study, the subject completed 12 days of resistance exercises with  ingesting og glucose or placebo during training. During the intervention the subject performed resistance exercise, strength tests, body mass index, dietary program, biopsies and blood samples.This was an within subject study with two groups where both groups performed the same traning protcol and dietary plan every day, with ingestion of glucose and placebo differed. The subjects legs (left or right) was randomized in either gluces (GLU) or placebo (PLU) group. After exercise the subject  ingested 25g Whey protein isolate (Proteinfabrikken, Stokke, Norway) mixed with 150g ml H2O after to ensure muscle growth. The subject performed the training protocol on one leg alternating days, with day 1 (T1) involed traning of the first leg (RT#1) and Day 2 (T2) on the second leg (RT#2), where Day 3 involved traning the first leg (RT#1) and so on. Six traning sessions was performed for each leg. The dietary plan was ingested with the training of one leg, and ensured within-subject comparisons to remove biological diversity. The subject was randomized into GLU or plac where half (n=10) perofrmed with glucose on the first day, and other half with placebo. In each group, the subject were randomly distrubuted (n=5) starting on the dominant leg, and the other half with the non-dominant leg.
+
+Figur 1: Study overview
+
+### 7.2 Subjects
+
+16 male (n=10) and female (n=6) moderate strength trained participants (20-45 years) was recruited to the study from Høgskolen in Innlandet, Lillehammer. 3 subjects was not able to finish the intervention because of injury or sickness during the intervention. They were non-smoking and moderately trained (having performed 2-8 resistance exercises per 14 days for the last six months). The criteria of exclusion were previous injury resulting in impaired strength, inability to perform resistance training and medical recdord of metabolic disorder including hyperglycemia, i.e. fasting venous plasma glucose >- 6.1 mmol/L and/or 2- houre glucose tolerance >. 7.8 mmol /L, and/or Hba1c > 42mmol/mol. Not able to understand Norwegian, disabling musculoskeletal disease, serious mental illness, allergy to local anesthesia and impaired glucose tolerance.
+
+Figur 2: subjects
+
+```{r table 1 subject, echo=FALSE}
+
+
+```
+
+
+### 7.3 Strength test
+
+On testday -7 and -5, 1 repetition maximum (1RM) test was executed. Each participant had 10 minutes of warm up on ergometer cycling. The subjects performed 1RM on one leg at a time on one legged leg press and one legged knee extension. Two sets of warm up consisted of . . . was performed before the test to remove most of techincal progression. During the first test on -7 the subject was asked what they believed was their 1RM was and taken as a base to perform. The test on -5 was to ensure the right 1RM was found, based on the test conducted on -7. The subject got 5 tries and 1RM was sett on the set before failure trial. The 1RM test was also the base for training adaption during the intervention.
+
+Table 1: Participtant characteristics.
+
+
+
+
+### 7.4 Isokinetic test
+
+### 7.5 Traning protocol
+
+The training protocol consisted of unilateral one-legged press and unilateral one-legged knee extension, performed as three sets of 10RM. Each subject was randomly assigne to train one leg each day (dominant or non-dominant) and trained each leg on alternating days, associated with either glucose of placebo ingestion. Each traning session consisted of 10 minutes of warm up on ergometric cycle, two warm up sets, where first set was 50% of 1RM, and the second ca. 70% 1RM. Each subject had trained personnel under each traningsession during the whole intervention, that ensured adaption and security during the exercise. The main traning was 10 repetition maximum with three series and each subject har 2 minutes break between series. The subject performed six traningsession on each leg during the twelve days. fifteen minutes after the traning session, the subject registered their perceived rate of exertion using a 10 point scale.
+
+### 7.6 Assessments of body composition
+
+Body mass composition was measured usin duel-energy x-ray absorptiometry (DXA) prior to the intervention (day -1). DXA was used to register data on lean body mass, fat mass, and bone minerl density. data on lean body mass was used to enable proper doage of deterium ingestion (D2O, heavy water).
+
+### 7.7 D2O, heavy water and spit protocol
+
+On day -1 the subject ingested their largest dosage of D2O, where D2O was diluted with 1 part D2O and two parts water (H2O) and ingested in small dosages on 20 minutes intervals, in a period of 2-3 hours. This was done to prevent symptoms of dizziness. The large dosage was measured 5.25ml x fat free mass, and the daily dosage as 0.53ml x fat free mass. During the intervention, the subjects got refills of D2O with glucose or placebo drink. The subject had spit test each day (D-1 - D12) before intervention started. The subjects chewed on a cotton for 60 seconds before placing the cotton in a tube. Thereafter the tube was centrifuged @1000g for 2 minutes. Spis was taken out to new tubes at stored at -80 grader. The spit test will be send to Denmark for analysis on D2O concentration during the intervention. 
+
+### 7.8 Biopsies 
+
+Muscle biopsies was sampled from m. vastus lateralis at 4 timepoints; T1, T2, T3 and T4 during the intervention: 1) before the intervention from the performing leg on Day 1 (T1, pre RT#1), 2) before the intervention on the performing leg on Day 2 (T2, pre RT#2), 3) before the sixth training session on RT#1 on Day 11 (T3, post RT#1), and 4) before the sixth training session on RT#2 on Day 12 (T4, RT#2). All biopsies were sampled in an overnight-sated state at the same time of the day (feks 0545, 0645, 0745 depending on the daily timing of dietary intervention-onset, corresponding to 0600, 0700, and 0800 hrs, respectively). The biopsies was sampled under antiseptic conditions, and local anaesthesia (Lidokain 10 mg ml-1, Mylan Hospital AS, Oslo Norway) using minimally invasive micro-biopsy technique (kilde), using a 12-14 gauge needle (Universal Plus, Mermaid medical A/S, Stenløse, Denmark) operated with a spring loaded biopsy gun (Bard Magnum, Bard Norway A/S, Oslo, Norway). 
+
+### 7.9 Blind drink test
+
+A blinded randomized drink taste test was done D13 after isokinetic test. The subject was handled four cups, numbered 1-4, where two contained fun light with glucose and two contained fun light with placebo. Before the test, the subject ingested one cup mixed with glucose and placebo to set taste. The conten in the cups and the order to drink was randomized. Each cup contained 1 dl of fun light. The subject was ordered to drink one cup at a time, in their own time, and take notice of what they thought the cups contained.
+
+### 8 Protein extraction and Western blotting
+
+After taken all aqueous phase out.
+
+300 ul ethanol 96% (EtoH 96%) was added and inverted the tube to mix. The tubes incubated for 3 minutes. Then transferred 1.75 ug/(tissue weight/950) = x was added to a new tube. 490 ul EtoH (96%) was added to phenol-ethanol supernatant and vortexed. 100 ul BCP was added and vortexed. 450 ul ddH2O was added for phase seperation, vortexed vigorously, centrifuged @ 12000g @RT (room temperature) for 5 minutes. The upper phase was removed and 700 ul of EtOH (96%) was added. The tubes was votexed vigorously and centrfuged @ 12000g @RT for 5 minutes to form a pellet. The EtOH was then completely removed and pellets set to air dry @RT for 2-3 minutes, with lid open.The pellets was checken often, to ensure that they did not overdry. 40 ul of SDS-urea buffer with inhibitors (1.05 ml 1m tris pH 6.8, 2.075 ml 20% SDS, 1.25 ml glycerol, 207.5 ul beta-merc, 3.1 g urea, and added ddH2O to final volume 10 ml, 1 crushed tablet of protease and phosphatase inhibitors each) was added after the pellets was dry, vigorously vortexed and incubated for 20 minutes @RT, or until all pellets was dissolved. After incubation, the samples was centrifuged @ 10000 g @RT for 5 minutes, or until sediment was dissolved. 30 ul was transferred to new tubes (b), and from there 4 ul was transferred to new tubes (c) that already contained 36 ul of ddH2O, and both was stored at -20 celsius. After all samples was extracted of proteins, they were ready for Bradford assay. 250 ul of bradford assay reagent was added with samples (c) mixed with ddH2O in a bradford assya tray, and runned to determined the protein consentration and thereafter standardized the concentration in all samples average (avg) concentration times volume divided by 2 or 1.75 minus 26 ((avg x 26)/2, or 1.75)- 26. 
+
+ Table () preparation of diluted BSA. Stock is SDS-urea with inhibitors 
+Vial	Volume of Diluent	Volume and Source of BSA	Final BSA concentration
+A	0	300 ul of stock	2000 ug/mL
+B	125 ul	375 ul of stock	1500 ug/mL
+C	325 ul	325 ul of stock	1000 ug/mL
+D	175 ul	175 ul of vial B dilution	750 ug/mL
+E	325 ul	325 ul of vial C dilution	500 ug/mL
+F	325 ul	325 ul of vial E dilution	250 ug/mL
+G	325 ul	325 ul of vial F dilution	125 ug/mL
+H	400 ul	100 ul of vial G dilution	25 ug/mL
+I	400 ul	0	0 ug/mL = blank
+
+
+
+### 8.1 Western blottning
+
+After the samples was prepped and dilutet to 2 ug /ul protein, loading buffer was added to dilute samples 1.5
+
+SDS-page
+
+Precast gels were placed in a rack with Running buffer. Running buffer (1 liter) was 100 ml 10x tris-glycine buffer, 10 ml of 10% SDS and added ddH2o to final volume 1000 ml. 10x tris-glyine running buffer (1liter) was 30.3 g tris (MW 121.14, final concentration 250 mM, 25 mM in 1x solution), 144.1 g glycine (MW 75.07, final concentration 1.92M, 192 mM in 1x solution), 10 g SDS, and added ddH2O to final volume 1000 ml. 5 ul of ladder (name) and 10 ul of samples was added to the gel, runned on 250 v ~1 hour or until blue lines exits the gel @RT on icebath. Next was to transfer the protein to PFVS membrane. The fels and membranes were equilibrated for 45 seconds. The tank was filled ~50% of transfer buffer with magnetic stir bar. Transfer bufer (1 liter) was 100 ml  10X Tris-glycine buffer, 100 ml  methanol (MeOH) and added ddH2O to final volume of 1000 ml. the pH of the transfer buffer was not adjusted and chilled down before use. the PVDF membrane was prepared by cutting it into 8.5 cm x 14 cm, activated by incubating in MeOH for 5 minutes, then in transfer buffer for another 5 minutes. An iceblock was placed in the back pocket of the tray. To assemble the cassette, chilled transfer buffer was poured in each compartment of the assemby tray. the PVDF membrane was placed into the front compartment, suberged in transfer buffer. Foam pads as soaked in transfer buffer and ridden of all air bubbles before assembly. The foam pad was place first in the cassette, then filterpaper, gel, memrbane, filterpaper and foampad, respectively. The casette was then placed in the tank and filled with remaining transfer buffer until marked level. The tank was placed i on a stir plate to maintain even temperature an ion concentration during the transfer. Tthe trnsfer was run @ 400 mA 1 hour @4 celcius on ice bath.
+
+For protein visualization, MemCode was used. Destained with MeOH (1:1) and eraser with MeOH (1:1) was prepared beforehand. The membrane was never left to dry out under the whole protocol. The membrane was placed in a suitable container to rinse. DdH2O was uses to rinse the membrane, rocked manually and quickly decanted three times. Memcode sensitizer was added to the membrane and agitated @RT for 2 minutes on a rotary platform at moderate spees. After decanted solution, Memcode reversible stain was added and th membrane agitated for 1 minute on a rotary platform at moderate speed @RT. Stained proteins did then appear. After decanted stain, the membrane was rinsed with ddH2O, rocked manually and wuickly decanted three times. Destain with MeOH was added to the membrane and aigtaded for 5 minutes on rotarty platform. The membrane was then rinsed with ddH2O, rocked manually three times. after rinsing, the membrane was photoghraphed in G:BOX on clear plstick sheet and then cut into desirable strips.The membrane was left in ddH2O while waiting to be photographed. To erase the stain, eraser with MeOH was added to the membrane and agitated @RT for 10 minutes (~ 20 minutes) on rotary platform. After 10 minutes the membrane were rinsed with ddH2O and rocked manually four times. 
+
+### 8.2 Protein identification with antibodies:
+
+
+The membrane was blocked using blocking solution (500 ml, 50 ml 10X TBS, 500 ul Tween, 25g non-fat dried milk powder and ddH2O to final volume 500 ml) for 1 hour on a rotary platform. After decanted blocking solution, the membrane was incubateing with primary antibodies over night @4 celccius with lid (Mafbx 1:100: diluted mafbx antibody in 1x TBS-T, 5% non-fat dried milk powder. MuRF, 1:100: diluted MuRF antibody in 1x TBS-T, 1 liter: 100mlX TBS, 1ml Tween and added ddH2O to final volume 1000 ml).
+
+### 8.3 Enhanced chemiluminescence:
+
+Luminol and peroxide was mixed 50/50 for ECL for 5-7 minutes and added to the membrane (?). The membrane was then photographed in G:BOX on clear plastic sheet with black background. The membrane was dried @RT until completely dried and stored.
+
+### 9. Data management and biobank
+
+The data management plan is in line with the FAIR-principle. The project will be integrated into the Norwegian Services for sensitive data (TSD), allowing collection, storage, sharing and analyses of sensitive research data in a secure environment. Data will remain coded until after completion of cleaning of primary outcome data. After finalization of the project (31.12.2023), biological samples will be transferred from the project-specific biobank to the general biobank “«The TrainOME – humane cellers tilpasning til trening og miljø» (REK-ID: 	2013/2041). Muscle biopsy material will be transferred to Denmark for analyses of rates of RNA and/or protein synthesis (in a coded state, remaining material will be returned to Norway/Lillehammer). 
+
+### 10. Study financing
+
+The study will be financed by the Inland Norway University of Applied Sciences. The project consortium has no conflicts of interest to declare.
+
+### Statistic analizyz
+make mean for replicates and beregne change score. mixed model - tar hensyn til at alle har ulik utgangspunkt. naturlig log skala, log fold change. endre tekniske feil - hvoordan påvirker dette resultatene.
+
+
+
+### 11.Results
+
+### 11.1 Supplement
+
+All subject ingested 25g whey protein before and right after resistance exercise.During exercise, all subject ingested three dosages of 300 ml drink with either glucose or placebo, 30 minutes before, right before and right after exercise.
+``` {r supplement}
+
+
+```
+### 11.2 strength test
+
+```{r strength}
+#Load isokinetic test
+
+```
+
+### 11.3 1RM test
+``` {r 1rm}
+#load 1RM results
+
+Onerm <- read_excel("data/results/ribose_1rm.xlsx") %>%
+  print()
+
+
+# ggplot() %>%
+  
+
+```
+
+### 11.4 Training volume
+```{r training volume}
+#Load training volume
+
+volume <- ribose_volume <- read_excel("data/results/ribose_volume.xlsx") %>%
+  print()
+ 
+
+volume %>%
+  group_by(group) %>%
+  print()
+
+```
+
+### 11.5 Training results
+
+``` {r training}
+#load traning results
+
+training <- read_excel("data/results/ribose_training.xlsx") %>%
+  print()
+
+```
+
+### 11.6 rpe results
+
+```{r rpe}
+
+#load RPE results
+
+
+
+```
+
+### 11.7 Glucose results
+``` {r glucose}
+#load glucose reuslts
+
+
+```
+
+### 11.9 Nutrition 
+
+```{r nutrition, }
+#load nutrition data
+#missing FP 106 and 116
+
+
+
+``` 
+
+### 11.8 Protein analysis
+
+``` {r protein analysis}
+
+proteinanalyse <- read_excel("data/results/Ribose_proteinanalyse.xlsx") %>%
+  rowwise() %>%
+  mutate(total.protein = mean(c(total.protein1, total.protein2)),
+         background = mean (c(background1, background2))) %>%
+  ungroup() %>%
+  select(gel, well, sample, timepoint, supplement, subject, total.protein, background, ubf, murf) %>%
+  mutate(total.protein = total.protein - background)%>%
+  group_by(gel) %>%
+  mutate(total.protein = total.protein /max (total.protein),
+         ubf = ubf/max(ubf),
+         murf = murf/max(murf),
+         ubf = ubf/ total.protein,
+         murf = murf/ total.protein) %>%
+  group_by(subject, sample, supplement) %>%
+  mutate(timepoint = gsub ("rna1", "", timepoint),
+         timepoint = gsub ("rna2", "", timepoint),
+         timepoint = if_else(timepoint %in% c("T1", "T2"),
+                             "pre",
+                             "post")) %>%
+  ungroup() %>%
+  select(-sample) %>%
+  pivot_wider(names_from = timepoint,
+              values_from = c(ubf, murf)) %>%
+  mutate(ubf_change = log(ubf_post) - log(ubf_pre),
+         murf_change = log(murf_post) - log(murf_pre)) %>%
+  print()
+
+
+
+```
+
+
+
+
+
+
+### 12. discussion 
+
+
+### 13. literature 
+
+Alberts, B., Hopkin, K., Johnson, A., Morgan, D., Raff, M., Roberts, K., Walter, P. (2019) Essential Cell Biology. Fifth edition. New York: W.W Norton & Company. ISBN: 9780393679533 
+
+Fujita, S., Dreyer, H., C., Drummon, M., J., Glynn, E., L., Volpi, E., Rasmussen, B., B. (2009). Essential amino acid and carbohydrate ingestion before resistance exercise does not enhance postexercise muscle protein synthesis. J Appl Physiol 106(5):1730-9. doi: 10.1152/japplphysiol.90395.2008.
+
+Koopman, R., Beelen, M., Stellingwerff, T., Pennings, B., Saris, W., H., M., Kies, A., K., Kuipers, H., van Loon, C. (2007). Coingestion of carbohydrates with protein does not further augment postexercise muscle protein synthesis. American Journal of Physiology-Endocrinology and Metabolism, 293(3): 833-842 Doi: https://doi.org/10.1152/ajpendo.00135.2007
+
+Levers, K., Vargo, K. (2015). Building Muscle Mass: Physiology, Nutrition, and Supplementation. Nutritional Supplements in Sport and Exercise. 123-157 Doi: 10.1007/978-3-319-18230-8_7
+
+McArdle, Q. D., Katch, F. I., Katch, V. L. (2015) Exercise Physiology: Nutrition, Energy, and Human Performance. Eight Edition. Baltimore: Wolyers Kluwer Health.
+
+Pasiakos, S. M., Carbone, J. W. (2014) Assessment of Skeletal Muscle Proteolysis and the Regulatory Response to Nutrition and Exercise. Doi: 10.1002/ub.1291
+
+ Roy, B. D., Tarnopolsky, M. A., Macdougall, J. D., Fowles, J., Yarasheski (1997) Effect og flucose supplement timing on protein metabolism after resistance training. J Appl Physiol. 82(6)1882-8. Doi: 10.1152/jappl.1997.82.6.1882
+ 
+Silverthorne, D. U. (2019) Human Physiology: An Intergrted Approach. 8th edition, Pearson Education ISBN: 978-0-13-46St0519-
+
+Tipton, K. D., Ferrando, A. A., Phillips, S. M., Doyle Jr, D., Wolfe, R. R. (1999) Postexercise net protein synthesis in human muscle from orally administered amino acids. Am J Physiol. 276(4) 628-34. Doi: 10.1152/ajpendo.1999.276.4.E628
+
+Schoenfeld, B. J., Ogborn, D., Krieger, J. W. (2017) Dose-response relationship between weekly resistance training volume and increases in muscle mass: A systematic review and meta-analysis. Journal of Sport Science, 35(11)1073-1082. Doi. 10.1080/02640414.2016.1210197

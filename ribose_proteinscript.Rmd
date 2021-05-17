@@ -1,0 +1,1471 @@
+---
+title: Ingestion of liquid glucose during exercise blunt accumulation of protein expression MuRF1 in vastus lateralis in healthy trained adults.
+output:
+  word_document: default
+  html_document: default
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE,}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, results = "asis")
+
+```
+
+```{r packages, echo = FALSE, warning=FALSE}
+library(readxl)
+library(knitr)
+library(rmarkdown)
+library(tidyverse)
+library(broom)
+library(lme4)
+library(lmerTest)
+library(emmeans)
+library(ggplot2)
+library(ggpubr)
+library(dabestr)
+library(magrittr)
+
+```
+
+
+
+### Acknolegement 
+“The resistance that you fight physically in the gym and the resistance that you fight in life can only build a strong character.” 
+- Arnold Schwarzenegger
+The year 2020 gave strength a new meaning. The whole world went into lock down, a pandemic sending the world in a silent, isolated panic. While I am still writing my paper in 2021 we are still in lock down.
+I would firstly like to thank the Inland Norway University of Applied Sciences who tried their best, and still do, to make sure of the safety for their student. Even though they sent everybody home, they also adapted professionally fast. The school’s fast adjustment gave a sense of security; I did not halve less to, even though I had most of my 3’rd semester at home.
+I would like to thank Chris and Max; their involvement and enthusiasm in laboratory work have been motivating, and without them my analysis in laboratory work would be blunt.
+To my fellow Students; Even though everything did not go as planned, we can say that not even a pandemic is going to stop us from getting educated.
+ To my Teachers; Thank you for your adaption and adjustment of lectures. It does not matter where you teach us from, it is just as motivating, engaging and informative. You have really shown that the teaching platform does not depend on where you are, but on how motivated we are in learning.
+And a big thank you to Daniel and Stian for guiding throughout the year. Your professionally knowledge is extremely motivating. And thank you to the Ribose team for letting me in. A hardworking team with teachers and students helping and working with each other throughout the year. It has been an educating year with a steep learning process, and further enhanced my curiosity in physiology and health in the human body.
+
+## Considering Covid-19
+This study is a part of a bigger project under the project Ribose. 
+The study was supposed to have at least 20 subjects, but we had a hard time getting subject recruited because of continuing closing down of the school. Another limitation was that of tests. We took blood samples, that were to be analysed at the hospital in Lillehammer, but during the project, the hospital had to change their protocol for analysing and we did not get the results in time for submission of this thesis. The subjects also consume deuterium oxide (D2O, heavy water) to measure rates of RNA and protein synthesis in form of spit tests which were to be analysed in Denmark. This also did not get back in time for analysis and might have been important for interpretation of the outcome of the project. 
+
+
+### Abstract
+Purpose: The purpose of this study was to investigate the effect of ingesting liquid glucose during resistance exercise on protein expression of muscle RING finger 1 (MuRF1) on healthy trained adults after 5 training sessions. 
+
+Method: Thirteen healthy trained participants performed six sessions of heavy-load resistance training with ingestion of glucose or placebo in this within subject randomized clinical trial. The subjects concluded a three-week intervention, consistent of familiarization phase the first week, and two weeks of resistance exercise. The participants legs were randomized in either glucose (GLU) or placebo (PLA), ingested during or after training session. Blood samples and biopsies were taken before and after intervention. The outcome measures were protein expression on MuRF1, nutrition status, muscle strength, training volume and glucose levels in blood. All data is analyzed in R Studio.
+
+Results: Intake of glucose during resistance training led to a 26% [-0.4, -0.6] lower accumulation of protein expression MuRF1 in GLU compared to PLA (48% [0.03, 0.07] increase in post). The intervention led to an increase on total volume (PLA: 19% [0.1, 0.25], GLU: 18% [0.08, 0.24]. There was a time effect on isometric test (PLA: 8% [0.007, 0.16], GLU: 4% [-0.03, 0.12] on test 2, isokinetic 60sek (PLA: -18% [-0.25, -0.10], GLU: 9% [-0.16, -0.01] with significant difference between condition (p=0.03), and isokinetic 240sek (PLA -7% [-0.14, -0.01], GLU -5.5% [-0.1, 0.009]) on test 3. There was no difference between condition on restitution effect on isometric and isokinetic tests, but a time effect on isokinetic 60sek after 23 hours training session (p=0.02)
+
+Conclusion: Ingesting glucose supplement during resistance training decreases protein content of MuRF1 in skeletal muscle 
+
+### Content
+
+### 1. Theory
+
+Resistance training is performed with the purpose to increase performance in sporting competitions or to improve health and well-being in daily life. Specifically, resistance training improves muscular strength, size, and power in order to enhance athletic performance as results from morphological and neural adaptations, as well as a mean to achieve health improvements through blood pressure improved glucose tolerance, or insulin sensitivity (Folland, Williams, 2007; Kraemer, Raramess, French, 2002). Many of the beneficial effect’s resistance training exhibits on athletic performance and well-being are due to training-induced muscle hypertrophy. Hypertrophy is affected by protein synthesis and protein breakdown and can only occur through a positive net balance of proteins (Biolo, et at. 1995; Kumar, et al. 2009; Ogawa, et al. 2006; Tipton, Wolfe, 2001). If the net balance is in a negative state, protein breakdown exceeds protein synthesis, which leads to muscle loss (Biolo, et at. 1995; Kumar, et al. 2009; Tipton, Wolfe, 2001). The process of breaking down and building up protein structures is determined by protein turnover (Tipton, Wolfe, 2001). This process is affected by catabolic and anabolic stimuli which respectively controls the rate of breakdown and synthesis (Philips, et al. 1997; 2002). Resistance training elevates both mechanisms, and it is the fractional rate between breakdown and synthesis that determine an increase or reduction in muscle mass (Philips, et al. 1997; 2002). Ingesting protein and carbohydrate increase the rate of synthesis and blunt protein breakdown (Biolo, et al. 1995). Co-ingesting carbohydrate and protein supplement during resistance exercise has been found to blunt protein breakdown (Beelan, et al, 2008; Roy, et al. 1997). The ubiquitin proteasome pathway (UPP) is the main pathway for protein breakdown in skeletal muscle (Peris-Moreno, et al. 2020). MuRF1 is an E3 ligase found in UPP that is myofibrillar specific and high level of insulin can blunt E3 ligases though phosphorylation by Akt/mTOR (Peris-Moreno, et al. 2020). 
+
+1.1	Protein turnover
+On a cellular level, actin and myosin are the primary proteins that increase in size and results in muscle hypertrophy (Levers, et al. 2015). To induce this response there are two major signalling pathways, insulin-like growth factor 1 (IGF-1), which up-regulate phospoinositide-3-kinase-Akt (Akt) and protein kinase B-mammalian target of rapamycin (mTOR) (Schiaffino, et al. 2013). The other pathway that regulates muscle mass is myostain-Smad3 that acts as a negative regulator that works as a co-operator for up-regulation of the myofibrillar degrading specific E3 ligase MuRF1 (Peris-Moreno, et al. 2020; Schiaffino, et al. 2013). Protein turnover is the balance between protein syntheses and breakdown, and an important factor in maximizing adaptions to training and muscular growth (Biolo, et at. 1995; Kumar, et al. 2009; Tipton, Wolfe, 2001). Studies shows that after resistance exercise protein synthesis is elevated for up to 48 hours while protein breakdown only remains elevated for up to 24 hours before returning to baseline values (Philips et al. 1997;2002; Yang, et al. 2006). Protein supplements in form of amino acids is often used to provide sufficient amino acids to ensure a positive net balance in protein turnover, but this alone without physical exercise is not enough, as it has been shown that chronic inactivity leads to elevated markers of protein breakdown even with a normal dietary intake (Ogawa, et al. 2006; Macnaughton, et al. 2014; Tipton, et al. 1999). Observation with co-ingesting carbohydrates and protein supplements after resistance exercise decrease markers for protein breakdown in both untrained (Yang et al. 2006) and trained participants (Churchley, et al. 2007). This demonstrates the complex relationship between nutrition and resistance exercise to keep protein turnover in a positive state. This way, resistance exercise contributes to protein turnover and nutrition status will determine if the net balance is in favour for synthesis or breakdown (Macnaughton, et al. 2014; Philips, et al. 1997). The question then becomes if inhibiting protein breakdown during resistance exercise can increase the net gain of proteins in any significant way. There is a very real theoretical possibility to due to the increase in insulin levels when ingesting glucose, acutely activates the IGF-1 pathway and up-regulates Akt and mTOR, which in turn up-regulates protein synthesis but also downregulates the pathway for muscle protein breakdown (Peris-Moreno, et al. 2020; Yoon, 2017). Indeed, observation have found that insulin can blunt expression of the ubiquitin specific E3 ligase MuRF1 (Glynn et al., 2010).
+
+
+1.2	MuRF1
+The formal term for protein breakdown is proteolysis, which is a fundamental biological process providing amino acids for synthesis to vital organs, tissue, or repairing and remodelling (Alberts, et al. 2019; Pasiakos, Carbone, 2014). Proteases are the enzymes that control proteolysis, which hydrolyse peptide bonds splitting them into smaller chains, and then into individual amino acids (Alberts, et al. 2019; McArdle, Katch, Katch, 2015). Proteasomes are the protein complexes that degrade proteins (Alberts, et al. 2019). Proteasomes resides in the cytosol and nucleus within the cell, in a cylindrical form made from proteases (Alberts, et al. 2019). Proteasomes unfolds protein complexes marked for degradation by ubiquitin, and cuts them into short peptides (Alberts, et al. 2019). There are three pathways that degrade protein: autophagy, calpain calcium dependent cysteine protease, and the ubiquitin proteasomal pathway (Tipton, et al. 2018) In skeletal muscle, protein degradation is regulated primarily by the ubiquitin proteasome pathway (UPP) (Myung, Kim, Crews, 2001). The ubiquitin function as a marker that target cytosolic and nuclear proteins for rapid breakdown (Myung, Kim, Crews, 2001). When a protein is set for degrading, tagged with ubiquitin, the ubiquitin conjugating cascade (carboxyl group of Gly-76) is activated by ubiquitin-activating enzyme (E1) (Myung, Kim, Crews, 2001). The activated ubiquitin is then transferred to a thiol group of an activated site Cys residue (E2) by transacylation reaction (Myung, Kim, Crews, 2001). Then the ubiquitin attaches to protein substrate directly by itself, with E2, or together with ubiquitin ligases, (E3) (Myung, Kim, Crews, 2001). In more colloquial terms, when a protein is tagged with ubiquitin, the ubiquitinated protein enters the proteasome and degrades into smaller peptide units (McArdle, Katch, Katch, 2015). It is also believed that proteins with specific types E2 and E3 recognize specific proteins set for degradation (Myung, Kim, Crews, 2001). 
+
+In 2001, two papers identified two E3 ligases associated with muscle atrophy; Trim63 also known as muscle RING finger 1 (MuRF1) and FBX032 (MAFbx/astrogin 1) (Bodine, 2001; Gomes, et al. 2001). MuRF1 ligases are associated with skeletal muscle atrophy and is believed to be the main regulator of muscle mass through the FoxO families (Ogawa, et al. 2006; Peris-Moreno, et al. 2020). The current belief is that MuRF1 binds to titin located at the M-line where it has access to myosin and actin, to facilitate breakdown of myofibrillas (Peris-Moreno, et al. 2020). In skeletal muscle, MuRF1 is elevated under a fasted or/and physical inactive state and resistance exercise has shown to reduce the mRNA expression of MuRF1 (Mascher, et al. 2008; Ogawa, et al 2006). When FoxO is knocked out in mice, it has shown to lead to muscle sparing and blunting in insulin signalling of the Akt pathway, concluding that MuRF1 is highly important for the regulation of muscle mass (O’Neill, et al. 2018). When blood glucose increases, insulin is released and inhibits protein breakdown through Akt and mTOR, which down-regulates FoxO families (Peris-Moreno, et al. 2020;). In addition to inhibiting protein breakdown trough Akt, it has been hypothesized that insulin inhibits the activation of AMPK, which stimulates the expression of MuRF1 (Deng, et al. 2015).
+
+
+1.3	Measure protein breakdown
+
+There are several methods used to measure protein breakdown in the human body. Arteriovenous balance (AV-balance) is one way, butt his method requires trained personnel and equipment that is not easily obtainable, and do not measure protein breakdown per se., but Supplements and resistance training measure blood flow across the muscle to ascertain protein breakdown, synthesis, and net balance of amino acids (Pasiakos, Carbon, 2014). Another way to measure protein breakdown is urinary excretion of 3-methyilhistidine (3-MH), which is often used in combination with, or without AV-balance (Pasiakos, Carbone, 2014). This is a valid method to measure muscle breakdown as 3-MH are residues derived from the breakdown of actin and myosin and requires less equipment than AV-balance (Pasiakos, Carbone, 2014). On the other hand, 3-MH method has been criticized because participants must be in a strict dietary control, as ingestion of animal meat can affect the excretion of myosin and actin residue (Pasiakos, Carbone, 2014). Even if participants are under a strict meat-free dietary control, it does not imply “true” results on protein breakdown during resistance exercise, it has been shown that protein from dietary intake is important for a positive net balance and protein supplements can further enhance synthesis (Beelen, et al. 2010; Macnaughton, et al. 2014; Miller, 2007). QRT-PCR to analyse mRNA expression and western blotting for protein content are the other valid methods (Pasiakos, Carbone, 2014). These methods of measurement have a greater availability compared to other methods, such as measuring the AV blood flow to gather evidence of protein breakdown (Tipton et al., 2018). While these methods fail to represent cumulative changes in the muscle, they will give a snapshot of the intramuscular milieu at a specific point in time (Pasiakos, Carbone, 2014). Th reasoning behind using a within-participants study design in conjunction with western blotting for protein markers, is that the design will remove any biological differences and hopefully give strong evidence on the difference between conditions (Hammarström et al., 2019). it has also been found that changes in biological markers after only two weeks were indicative of future training response which gives the basis for the length of this study (Hammarström et al., 2019).
+
+
+1.1	Supplements and resistance training 
+Ingesting amino acids through a protein rich meal or supplement stimulates muscle protein synthesis (Miller, 2007). Also, in conjunction with resistance exercise ingesting 40 grams (g) of essential amino acids after is sufficient to accelerate protein synthesis and blunt protein breakdown (Glynn, et al. 2010; Macnaughton, et al. 2014). The timing of ingesting carbohydrates may be an important factor to minimize markers for protein breakdown. A study examining supplements right before and after training has shown to decrease markers of protein breakdown in urinary samples, stating that the timing of supplement intake is important to maximize protein turnover by increasing protein net balance with amino acids, and minimizing protein breakdown (Kume, et al. 2020). Reducing protein breakdown is in fact the main way carbohydrates improve the protein net balance, when not ingested with amino acids (Børsheim, et al., 2004). Ingesting 100 grams of carbohydrates alone, without protein supplements, after resistance training can improve net protein balance, but does not elevate the net balance for synthesis to a positive state (Børsheim, et al. 2004). Also, observation has been found that a smaller amount of glucose intake can blunt expression of MuRF1, and as little as 30 grams of glucose seems to be sufficient (Glynn, et al. 2019). With a normal nutrition intake, the evening before resistance exercise, ingesting both carbohydrate and protein supplements improves whole body protein synthesis (Beelen, et al. 2010). 
+Ingesting a carbohydrate-only supplement directly after, and 1 hour after resistance exercise results in an up-regulation of blood plasma glucose, and down-regulation of protein breakdown (Roy et al., 1997) and different studies have looked at the effects of ingesting both carbohydrate and protein togheter on training. There are some questions regarding the importance of inhibiting protein breakdown on the anabolic response of the fractional rate in protein turnover (Glynn et al., 2010). Ingesting a mixture of carbohydrates and amino acids after resistance exercise resulted in a greater acute response in net protein balance than ingesting carbohydrates alone (Borsheim et al., 2004). This effect was also observed to last for more than an hour (Borsheim et al., 2004). There is also evidence to suggest different timing of ingestion in relation to exercise could affect the net balance in protein gain. Nutritional intake before resistance exercise resulted in lower protein breakdown than eating right after or staying fasted when measuring 3-MH excretion (Kume et al., 2020). Even when accounting for nutritional imbalances between subjects by standardizing a meal the night before, ingesting protein and carbohydrates together during exercise still resulted in elevated protein synthesis (Beelen et al., 2008). This underlines that supplementation surrounding exercise has value in its own right, and not just as an antidote for underlying nutritional imbalances. When co-ingesting carbohydrates and essential amino acids between exercise sets, 3-MH urinary markers for protein breakdown in myofibrillas is reduced by 27%, whereas for participant without supplements, 3-MH markers increased by 56% (Bird, S. P., Tarpenning, K. M., Marino, F. E., 2006). 
+Therefore, this thesis will examine if the timing of glucose intake, either during resistance exercise or in the evening reduces MuRF1 protein content after 5 training sessions. The hypothesis of this thesis is therefore stated as: 
+There is a significant reduction on protein markers of MuRF1 when ingesting glucose during resistance exercise.
+
+
+2.	Introduction
+Resistance training improves muscular strength and size, as results from morphological and neural adaptations (Folland, Williams, 2007; Kraemer, Nicholas, French, 2002; Ratamess, et al. 2009). Hypertrophy is affected by protein synthesis and protein breakdown and can only occur through a positive net balance of proteins (Biolo, et at. 1995; Kumar, et al. 2009; Ogawa, et al. 2006; Tipton, Wolfe, 2001). If the net balance is in a negative state, protein breakdown exceeds protein synthesis, which leads to muscle loss (Biolo, et at. 1995; Kumar, et al. 2009; Tipton, Wolfe, 2001). The process of breaking down and building up protein structures is determined by protein turnover (Tipton, Wolfe, 2001). Resistance training elevates both mechanisms (Philips, et al. 1997; 2002), and studies have found that co-ingesting carbohydrates and protein supplements can blunt muscle protein breakdown (Beelen, et al. 2010; Børsheim, et al. 2004; Glynn et al., 2010 Kume, et al. 2020; Roy et al., 1997). There is also evidence to suggest different timing of ingestion in relation to exercise could affect the net balance in protein gain. Nutritional intake before resistance exercise resulted in lower protein breakdown than eating right after or staying fasted when measuring 3-MH excretion (Kume et al., 2020). Glucose intake increases insulin levels and addition to inhibiting protein breakdown trough Akt, and it has been hypothesized that insulin inhibits the activation of AMPK, which stimulates the expression of MuRF1 (Deng, et al. 2015). MuRF1 ligases are associated with skeletal muscle atrophy and is believed to be the main regulator of muscle mass through the FoxO families (Ogawa, et al. 2006; Peris-Moreno, et al. 2020). Therefore, this thesis will examine if the timing of glucose intake, either during resistance exercise or in the evening, cand reduce MuRF1 protein content after 5 training sessions. The hypothesis of this thesis is therefore stated as: 
+There is a significant reduction on protein markers of MuRF1 when ingesting glucose during resistance exercise.
+
+
+## Method
+
+## Subjects
+3.1	Subjects
+Sixteen (male (n=10) and female (n=6)) moderately strength trained participants (20-45 years) were recruited to the study from Høgskolen in Innlandet, Lillehammer. Participant characteristics is presented as mean(Sd = standard deviation) in Table 1A on whole group and descriptive between left and right leg in table 1B. There was no significant difference between the legs (fat mass in kg, confidence interval ([CI: lower.CI, upper.CI]): Left [2.4, 4.16], Right [2.4, 4.3]. Lean mass in kg: Left [8.92, 10.5], Right [9.13, 10.7], total mass in kg: Left: [12.8, 14.6], Right [13, 14.9]).
+Three participants were not able to finish the intervention because of injury unrelated to the study, or sickness during the intervention (n=1). The participants were non-smoking and moderately trained (having performed 2-8 resistance exercises per 14 days during the last six months leading up to the study). Exclusion criteria were previous injury or injury during intervention resulting in impaired strength, inability to perform resistance training, and self-reported medical history of metabolic disorder including hyperglycemia, disabling musculoskeletal disease, serious mental illness, or allergy to local anesthesia. 
+
+Table 1A: Participants descriptive
+Table 1B: Leg descriptive
+
+```{r descriptive participants, echo=FALSE, warning=FALSE, include=FALSE}
+# descriptive table of subject
+#all variables is in kg excepts for age and height.
+
+#make grams into kg
+table.dxa <- read_excel("data/results/ribose_dxa.xlsx") %>%
+        select(sex, subject, age, height, weight, leanmasskg, fatmasskg, ffmg) %>%
+        #make grams into kg
+        mutate(ffkg = ffmg/1000) %>%
+        select(age, height, weight, leanmasskg, fatmasskg, ffkg) #%>%
+       # print()
+
+# dxa table on total group.
+dxa.table2 <- table.dxa %>%
+        pivot_longer(names_to = "variable",
+                     values_to = "values", col= age:ffkg) %>%
+        select(variable, values) %>%
+        group_by(variable) %>%
+        summarise(m = mean(values, na.rm = TRUE),
+                  s= sd(values, na.rm = TRUE)) %>%
+        mutate(stat = paste0(round(m, 1), " (", round(s, 1), ")")) %>%
+        select(variable, stat) %>%
+        mutate(variable = if_else(variable %in% c("age"),
+                                  "Age",
+                                  if_else(variable %in% c("weight"),
+                                          "Weight",
+                                          if_else(variable %in% c("ffkg"),
+                                                  "Fat free mass (kg)",
+                                                  if_else(variable %in% c("height"),
+                                                          "Height (cm)",
+                                                          if_else(variable %in% c("leanmasskg"),
+                                                                  "Lean mass (kg)",
+                                                                  if_else(variable %in% c("fatmasskg"),
+                                                                          "Fatt mass (kg)",
+                                                                          ""))))))) #%>%
+        #print()
+```
+
+``` {r participants table, echo=FALSE}
+
+dxa.table2 %>%
+        kable()
+
+
+```
+
+```{r descriptive leg, echo=FALSE, warning=FALSE, include=FALSE}
+
+dxaleg <-  read_excel("data/results/ribose_dxaprleg.xlsx") %>%
+        select(subject, sex, leg, leanmassg, fatmassg, totalmasskg) %>%
+        #make grams into kg
+        mutate(leanmass = leanmassg/1000,
+               fatmass = fatmassg/1000)%>%
+        select(subject, sex, leg, leanmass, fatmass, totalmasskg)%>%
+        print()
+#Make analysis bewteen groups. 
+dxa.stat <- dxaleg %>%
+        select(subject, leg, leanmass, fatmass, totalmasskg) %>%
+        print()
+
+#lean mass between legs, within subject.
+#no difference bewtween legs
+
+leanmass.lm <- lmer(leanmass ~ leg + leg:subject + (1|subject), data = dxa.stat)
+
+plot(leanmass.lm)
+
+summary(leanmass.lm)
+
+emmeans(leanmass.lm, specs = ~ "leg") %>%
+        confint()
+
+# fat mass between legs, within subject
+#no difference bewtween legs
+
+fat.lm <- lmer(fatmass ~ leg + leg:subject +(1|subject), data = dxa.stat)
+
+plot(fat.lm)
+
+summary(fat.lm)
+
+emmeans(fat.lm, specs = ~ "leg") %>%
+       confint()
+
+#Totalmass between legs, within subject.
+#no difference bewtween legs
+
+total.lm <- lmer(totalmasskg ~leg + leg:subject + (1|subject), data = dxa.stat)
+
+plot(total.lm)
+
+summary(total.lm)
+
+supsup <- emmeans(total.lm, specs = ~ "leg") %>%
+        confint() %>%
+        print()
+
+
+#Table showing leanmass, fatmass and total mass in kg pr. leg
+dxalegtable <- dxaleg %>%
+        select(leg, leanmass, fatmass, totalmasskg) %>%
+        pivot_longer(names_to = "variable",
+                     values_to = "values", col= leanmass:totalmasskg) %>%
+        group_by(leg, variable) %>%
+        summarise(m = mean(values, na.rm = TRUE),
+                  s= sd(values, na.rm = TRUE)) %>%
+        mutate(stat = paste0(round(m, 1), " (", round(s, 1), ")")) %>%
+        select(leg, variable, stat) %>%
+        pivot_wider(names_from = leg,
+                    values_from = stat) %>%
+        print()
+
+```
+Table 1B: Leg descriptive 
+``` {r leg table, echo=FALSE}
+#table
+dxalegtable %>%
+        kable()
+
+
+```
+
+
+
+
+## Study overview
+
+In this within participant interventional study, the participants completed a 3-week intervention. Participants performed in both conditions and their legs were randomly assigned to either glucose (GLU) or placebo (PLA) starting the training with either ingesting GLU or PLA the first session. The legs performed on alternating days, but the days has been paired as illustrated in figure 1. The first week was the familiarization phase, containing 2x 1RM tests, body mass index, and isokinetic and isometric tests. Week 2 and week 3 was the interventional phase containing blood samples and biopsies (baseline (B), and 6), dietary program and resistance training (B-6), isokinetic and isometric tests (B, 2, 3, 4,5, 6) with ingestion of glucose (GLU), or placebo (PLAC) during resistance training. In addition to be randomized in either GLU or PLA, the participants was randomized to start the first training session with either the dominant, or non-dominant leg. Six training session were performed for each leg.
+
+
+Figur 1: Intervention
+
+Figure 1 illustrates the training intervention. First week (T0) was the familiarization week with 1RM test, DXA and isokinetic and isometric tests (T). L1 illustrate the starting leg, L2 the second leg and how they trained on alternating days throughout the intervention. Illustrate blood samples and biopsies taken under the intervention.
+
+## Assessments of body composition
+
+Body mass composition was measured using dual-energy x-ray absorptiometry (DXA, Lunar Prodigy, GE, Heathcare, Oslo, Norway) last day in the familiarization phase (figur 1). The participants weight and height were registered prior to the measurements. The participants were asked to lay in the middle of the bench with minimal clothing. The participants arms and legs were placed inside marked position on the bench with hands and feet pointing upwards, towards the ceiling. They were asked to lay still throughout the measurements which took about 10 minutes. DXA was used to register data on total weight, lean body mass, and fat mass and mean(sd) was analyzed on total group
+
+
+
+
+## Dietary protocol
+
+Each participant consumed a total of 90grams of glucose (Glucosum monohydricum, Merck KGaA, Darmstadt, Germany) and 0.9 grams of stevia (Steviosa, Soma Nordic AS, Oslo, Norway), each day. Difference being the timing of ingestion. Drinks were mixed with Fun light juice (Orkla, Oslo, Norway). During training, participants ingested either glucose or placebo on three occasions, 300ml 30 minutes before exercise, 300ml right before, and 300ml right after exercise, they also consumed 900 ml of either glucose or placebo at the at 18:00 hours in the evening. The glucose drinks contained 30g of glucose pr. 300ml drink, or 0.3g pr. 300ml drink of stevia for placebo drinks. Before (2hrs) and after the training session the subjects consumed 25g (44 grams of protein each day) of Whey protein isolate (Proteinfabrikken, Stokke, Norway) mixed with 150ml H2O. The data on group distribution was collected by a colleague not involved in the project, who kept data until all measurements were done to ensure true nonbiased randomization.
+Participants were instructed to register their daily dietary intake throughout the study using an app-based data collection software (MyFitnessPal, Inc. Med). Participants were also asked to consume the same amount of macro nutrient each paired day to ensure non-biased nutrition status for the legs. The nutrition-supplements were calculated in the nutrition data for each participant after data collection. A blinded randomized drink taste test was done on last day after isokinetic test. The subject was handed four cups, numbered 1-4, where two contained fun light with glucose and two contained fun light with placebo. Before the test, the subject ingested one cup mixed with glucose and placebo to set taste. The content in the cups and the order to drink was randomized. Each cup contained 1 dl of fun light. The subject was ordered to drink one cup at a time, in his or her own time, and take notice of what they thought the cups contained. The data on blinded drink test showed that the participants could not detect taste differences.
+
+
+## Strength assessment 
+
+3.5	Strength assessment
+Maximum strength tests were assessed as one repetitions maximum (1RM) in the familiarization faze as a mean to adapt to exercises. After a standardized warm-up, the participants performed 1RM on one leg at a time on unilateral leg press and unilateral knee extension. Prior to the first test the participants were asked about their expected 1RM and this was used as the basis for test progression. The second test was to ensure the right 1RM was found, based on the test conducted. The 1RM test was also the base for training intensity during the intervention. 
+Unilateral isokinetic knee extension torque at 60˚/sec and 240 ˚/sec and isometric knee extension force tests were performed using Humac Norm dynamometer (CSMi, Stoughton, Massachusetts, USA). Isokinetic and isometric test on day B was set as baseline to compare on tests day 2 and 3 (test 1), 4 and 5 (test 2) and mean of test 6 (test 3) as mean to conduct strength assessment throughout the intervention. To measure restitution effects, 4 tests was conducted on day 6: before exercise (baseline), 30 minutes after, 2 hours after and 23 hours after training session to conduct any differences between conditions. The participants were asked to sit on the so the knee joint was parallel with the rotary axis of the dynamometer. The thigh and the ankle were strapped to the seat. Participants were instructed to push as hard as they could in concentric phase, and to rest in the eccentric phase. Three repetitions per test session and angular velocity were performed in isokinetic tests, and one repetition in isometric test which lasted for 10 seconds or until peak failure. All data about participant position in the chair was recorded and used throughout all tests. 
+
+
+## Training protocol
+
+Each training session consisted of 10 minutes warm up on an ergometric cycle, two specific warm up sets on unilateral leg-press, where first set was ca. 50% of 1RM, and the second ca. 70% 1RM, 10 repetition each. The main training consisted of three series of 10RM with 2 minutes rest between sets. The participants registered their session score using a 10-point scale fifteen minutes after the training session, where a score of 1 equals rest and 10 equals maximum effort. The morning after they register perceived rate of exertion (RPE) using a 9-point scale where 1 was very light and 9 was very heavy. Each participant had trained personnel supervising each training session during the whole intervention. The trained personnel followed the same participants throughout the intervention and there were no music playing to remove any potential confounding variables (Halperin, Pyne, Martin, 2015).
+
+
+
+##Biopsies and blood samples
+
+3.7	biopsies and blood samples
+All biopsies were sampled in an overnight-sated fast at the same time of the day before training session for the individual subject (figure 1). The biopsies were sampled under antiseptic conditions, and local anesthesia (Lidokain 10 mg ml-1, Mylan Hospital AS, Oslo Norway) using minimally invasive micro-biopsy technique, using a 12-gauge needle (Universal Plus, Mermaid medical A/S, Stenløse, Denmark) operated with a spring-loaded biopsy gun (Bard Magnum, Bard Norway A/S, Oslo, Norway). 
+Blood samples from finger stick were used to measure the blood glucose (Biosen C-line, lactat analysatior, EKF diagnostic GmbH, Barleben, Germany) levels on timepoint day 1, and several measurements at day 6. The samples at day one and the first sample at day 6 was set as baseline values. During day 6 blood samples were collected right before protein intake (0min), 45 min, 90 min, 120 min, 135 min, 150 min and 270 min after protein intake. This corresponds to training session as 30 min before warm-up session (90 minutes after protein, before first bolus of GLU/PLA drink), right after warm-up session (120 min after protein intake), in between exercises (135 minutes after protein intake), right after training session (150 minutes after protein intake) and 270 minutes after protein intake to look at glucose level in blood throughout training session. This means we should see elevated markers of glucose in blood during training.
+
+
+3.8	Protein analysis
+All steps were done on in room temperature if not otherwise stated. Muscle samples were homogenized in Eppendorf 1.5 ml tubes with 300ul Trizol using beads and a bead mill (Bullet blender, Next Advanced, Averill Park, NY, USA) 1 minute at speed 10 without thawing. After disruption of the muscle tissue, additional Trizol was added (total volume 1000ul), and run bullet blender (BB) at 1 min, at speed 3. Then the samples incubated for 5 min. After incubation 200ul of chloroform was added, shaken for 15 seconds, and incubated ~3 minutes. The tubes were placed in a centrifuge and spun at 12000g, 15 min at 4˚C for phase separation. After taken the aqueous phase, the remaining content in the tubes were stored at -20 ˚C until protein extraction.
+To separate DNA and protein 300 ul ethanol 96% (EtoH 96%) was added to the tubes, inverted to mix. After 3 minutes incubations, 490 ul EtoH (96%) was added to phenol-ethanol supernatant and vortexed shortly and then added 100 ul bromochloropropane and vortexed shortly. For phase separation 450 ul ddH2O was added vortexed vigorously and centrifuged at 12000g, for 5 minutes. The upper phase was removed and 700 ul of EtOH (96%) was added. The tubes were vortexed vigorously and centrifuged at 12000g, for 5 minutes to form a pellet. The EtOH was then completely removed, and pellets set to air dry for 2-3 minutes, with lid open. For re-suspension 40 ul of SDS-urea buffer with inhibitors (1.05 ml 1m tris pH 6.8, 2.075 ml 20% SDS, 1.25 ml glycerol, 207.5 ul 2-Mercaptoethanol 3.1 g urea, and added ddH2O to final volume 10 ml, 1 crushed tablet of protease and phosphatase inhibitors each) was added after the pellets was dry, vigorously vortexed and incubated for 20 minutes or until all pellets was dissolved. After incubation, the samples were centrifuged at 10000g for 5 minutes. After dissolved sediment 30 ul was transferred to new tubes (b), and from there 4 ul was transferred to new tubes (c) that already contained 36 ul of ddH2O, and both was stored at -20 ˚C. After all samples was extracted of proteins, they were ready for Bradford assay. In Bradford assay tray 250 ul of Bradford assay reagent was added with samples (c) mixed with ddH2O and run to determine the protein concentration. The samples protein concentration was standardized as average (avg) concentration times volume divided by 2 or 1.75 minus 26 ((avg x 26)/2, or 1.75)- 26.
+To prepare for western blotting the samples were normalized to 1.5ug/ul protein and 20ug protein was loaded in each well on precast gels. 5 ul of ladder and 10 ul of samples was added to the gel, run on 250 v ~1 hour or until blue lines exits the gel in ice bath. To transfer protein the gels were placed in a cassette with PVDF membrane (Transfer membrane Immobilon-P PCDF) in a tank filled with chilled transfer buffer. The tanks containing magnetic stir bar were placed on a stir plate and run 400mA for 1hrs at 4 ˚C on ice bath. For protein visualization, MemCode (Thermo Fisher Scientific Inc. USA) was used. The membranes were rinsed with ddH20 three times before adding sensitizer. After the membranes agitated for 2 minutes sensitizer was discarded and MemCode reversible stain was added. Stained proteins did then appear, and distain was used for 5 minutes to remove background colour. After rinsing distain with ddH20 the membranes were photographed in G:BOX (G:BOX-CHEMI-XT4 gel documentation system, Rödermark, Germany) for membrane visualization. After cutting the membranes in desirable strips, eraser was used to remove stain. The membrane was never left to dry out under the whole protocol.
+For protein identification with antibodies and enhanced chemiluminescence the membrane was blocked using blocking solution (10X TBS, 500 ul Tween, 25g non-fat dried milk powder and ddH2O) for 1 hour on a rotary platform. After decanted blocking solution, the membranes were incubating with primary antibodies MuRF1 (C-11, Santa Cruz Bioinformatics Dallas, Texas, U.S; sc-398608) (MuRF1, 1:100: diluted MuRF1 antibody in 1x TBS-T, 1 liter: 100mlX TBS, 1ml Tween and added ddH2O to final volume 1000 ml) overnight at 4˚C in a blot cycler (BlotCycler, Precision Biosystem, Mansfield, MA, USA). Luminol and peroxide was mixed 50/50 for electrochemiluminescence (Pierce, ECL Western Blotting substrate, Rockford, USA) for or 5-7 minutes and added to the membrane. The membrane was then photographed in G:BOX on clear plastic sheet with black background. ImageJ (Reuden, et al 2017) was used to quantify the protein and measured as total protein background on grey area subtracted with whole well and between well values. The membrane was dried until completely dried and stored in -20˚C freezer. 
+
+
+## Statistic analysis
+
+4.	Statistical analysis
+Full dataset and script can be downloaded at:  . read.me will have an overview over all folders. All descriptive data is shown in mean and standard deviation (mean (sd)). All data was imported and analysed in R studio (R studio). To explore the difference between conditions, linear mixed model was used (LMM) and baseline set to dependent vairable. LMM take accountability for within subject variation with log metric calculation on the mean to take accountability to different baseline score. Analysis results are written as %change, 95% confidence interval (CI [Lower.CI, upper.CI]). The level of statistic significant was set to α=0.05.
+
+## Results
+
+## nutrition status
+All participants except for one delivered data on their daily nutrition intake illustrated in table 2. There was no difference between conditions on any macronutrient on any paired days or between conditions except for total calorie intake and protein/kg, which differed between each pair of days, but not between conditions. 
+
+Table 2: Nutrition intake
+
+```{r nutrition table, echo=FALSE, warning=FALSE}
+
+#nutritiontable with pro.pr kg bodyweight pr. group
+#Data: "analysis_nutrition_table"
+#laod dxa data and take out weight and subject to join with nutrition data
+fp.weight <-read_excel("data/results/ribose_dxa.xlsx") %>%
+        select(weight, subject) #%>%
+#print()
+
+#nutrition data.
+#the data is in grams and 
+# added 44 grams protein as sup_protein for ingestion of whey protein isolat,
+#And calculated in to the total amount of proteins ingested pr day.
+#added 90g of glucose in to carbohydrate 
+#added 360 kcal from glucose intake and calculated in total kcal pr day
+#one participant did not deliver data on nutrition
+
+#Load nutrition data.
+nut.weight <- read_excel("data/results/Ribose_nutrition_result.xlsx")%>%
+        select(timepoint, meal, subject, protein, fat, calories,
+               carbohydrates, group, sup_pro, sup_gluc, kcal_glu) %>%
+        #changed names to compare groups each paired days
+        mutate(timepoint = if_else(timepoint %in% c("T1","T2"), 
+                                   "B",
+                                   if_else(timepoint %in% c("3", "4"),
+                                           "2",
+                                           if_else(timepoint %in% c("5", "6"),
+                                                   "3",
+                                                   if_else(timepoint %in% c("7", "8"),
+                                                           "4",
+                                                           if_else(timepoint %in% c("9", "10"),
+                                                                   "5",
+                                                                   if_else(timepoint %in% c("T3", "T4"),
+                                                                           "6",
+                                                                           "na"))))))) %>%
+        group_by(timepoint, subject, group) %>%
+        #take in weight
+        inner_join(fp.weight) %>%
+        #summarise each variable to get total pr timepoint.
+        #Whey protein supplement is added to total protein ingestion
+        summarise(protein = sum(protein + sup_pro),
+                  fat = sum(fat),
+                  calories = sum(calories + kcal_glu),
+                  carbohydrates = sum(carbohydrates + sup_gluc),
+                  weight = sum(weight)) %>%
+        #summarise to get protein pr weight.
+        mutate(proprkg = (protein/weight)) %>%
+        pivot_wider(names_from = group,
+                    values_from = c(fat, protein, calories, carbohydrates, weight, proprkg)) #%>%
+        #print()
+#nutrition table with pro/weight. The table shows mean and sd of total intake 
+#in grams pr. group, pr. timepoint.
+#How much kcal on glucose supplement?
+
+nuttable <- nut.weight %>%
+        pivot_longer(names_to = "variable",
+                     values_to = "values", col= fat_glucose:proprkg_placebo) %>%
+        group_by(timepoint, variable) %>%
+        summarise(m = mean(values, na.rm = TRUE),
+                  s= sd(values, na.rm = TRUE)) %>%
+        ungroup() %>%
+        separate(variable, into = c("variable", "group")) %>%
+        mutate(stat = paste0(round(m, 1), " (", round(s, 1), ")")) %>%
+        select(timepoint, variable, group, stat,) %>%
+        pivot_wider(names_from = variable,
+                    values_from = stat) %>%
+        select(timepoint, group, calories, carbohydrates, fat, protein,
+               proprkg) %>%
+        #changed names of group for simplicity 
+        mutate(group = if_else(group %in% c("glucose"),
+                               "G",
+                               if_else(group %in% c("placebo"),
+                                       "P",
+                                       ""))) #%>%
+        #print()
+
+#Check the table
+nuttable %>%
+        kable() 
+
+```
+Table 2: Nutrition intake pr. group each day in mean(SD). G= glucose, P = placebo. All data are in grams (g) 
+
+```{r nutrition mean diff, echo=FALSE, include=FALSE}
+#data: "Analysis_nutrition_diff"
+#this scrips measures the mean diff on nutrition between condition each paired days
+
+#Does not contain FP 116 because of not delivered data.
+
+#summarise macro
+#Added sup_pro as whey protein isolate, 50 grams each group, each timepoint,
+#90 grams glucose and 360 kcal.
+
+#This script examine the mean difference on nutrition intake between groups each
+#pried days.
+
+fp.weight <-read_excel("data/results/ribose_dxa.xlsx") %>%
+        select(weight, subject) %>%
+        print()
+
+nutha <- read_excel("data/results/Ribose_nutrition_result.xlsx")%>%
+        select(timepoint, subject, group, calories, fat, carbohydrates, protein, sup_pro, sup_gluc, kcal_glu) %>%
+        mutate(timepoint = if_else(timepoint %in% c("T1","T2"), 
+                                   "B",
+                                   if_else(timepoint %in% c("3", "4"),
+                                           "2",
+                                           if_else(timepoint %in% c("5", "6"),
+                                                   "3",
+                                                   if_else(timepoint %in% c("7", "8"),
+                                                           "4",
+                                                           if_else(timepoint %in% c("9", "10"),
+                                                                   "5",
+                                                                   if_else(timepoint %in% c("T3", "T4"),
+                                                                           "6",
+                                                                           "na"))))))) %>%
+        group_by(timepoint, subject, group) %>%
+        inner_join(fp.weight) %>%
+        summarise(protein = sum(protein + sup_pro),
+                  fat = sum(fat),
+                  calories = sum(calories + kcal_glu),
+                  carbohydrates = sum(carbohydrates + sup_gluc),
+                  weight = sum(weight)) %>%
+        mutate(proprkg = (protein/weight)) %>%
+  print()
+        
+        
+        
+#change data
+#Protein
+
+pro_change <- nutha %>%
+        select(timepoint, subject, group, protein,) %>%
+        print()
+
+
+prolm <- lmer(protein ~ timepoint + timepoint:group + (1|subject), data = pro_change)
+
+plot(prolm)
+
+summary(prolm)
+
+#No difference on protein between conditions
+
+#Fat
+fat_change <- nutha %>%
+        select(timepoint, subject, group, fat,) %>%
+        print()
+
+fatlm <- lmer(fat  ~ timepoint + timepoint:group +(1|subject), data = fat_change)
+
+plot(fatlm)
+
+summary(fatlm)
+
+#No difference on fat between conditions
+
+#Carbohydrates
+carb_change <- nutha %>%
+        select(timepoint, subject, group, carbohydrates,) %>%
+        print()
+
+carblm <- lmer(carbohydrates  ~ timepoint + timepoint:group + (1|subject), data = carb_change)
+
+plot(carblm)
+
+summary(carblm)
+#No difference on fat between conditions
+
+
+#calories
+cal_change <- nutha %>%
+        select(timepoint, subject, group, calories,) %>%
+        print()
+
+
+
+callm <- lmer(calories  ~ 0 + timepoint + timepoint:group + (1|subject), data = cal_change)
+
+plot(callm)
+
+summary(callm)
+
+#There is different intake on total kcal each dat, but no difference between conditions
+
+#Protein pr bodyweigh
+
+
+prowe <- nutha %>%
+        select(timepoint, subject, group, proprkg) %>%
+        print()
+
+prokglm <- lmer(proprkg  ~ 0 + timepoint + timepoint:group + (1|subject), data = prowe)
+
+plot(prokglm)
+
+summary(prokglm)
+
+#There is a difference on total protein intake pr/kg each paired day, but
+#with no diffence between conditions
+
+
+
+```
+
+
+## Training Volume
+There was no difference in total training volume between conditions on baseline values (PLA: 5351kg (1615), GLU: 5262kg (1799)). Total training volume on day 6 was 6438kg (2092) in PLA and 6319kg (2256) in GLU. The training intervention led to a 19% [0.1, 0.25] increase in PLA and 18% [0.08, 0.24] increase in GLU in total volume after 6 training session compared with baseline values. There was a time effect on day 4-6 (figure 2) on total volume with no differences between conditions in relative increase in total training volume from baseline to any subsequent time-point.
+
+```{r training volume, echo=FALSE, warning=FALSE, include=FALSE}
+# Data
+tot.vol <- read_excel("data/results/ribose_volume.xlsx")  %>%
+        # take out variables in interest, to find change of  total volume
+        select(subject, timepoint, tot.volume, supplement) %>%
+        print()
+
+# Data handling
+#pair so glucose and place is on the same timepoint
+#timepoint T1, T2 is set to baseline, 
+tot.volh <- tot.vol %>%
+        mutate(time = if_else(timepoint %in% c("T1", "T2"),
+                              "baseline",
+                              if_else(timepoint %in% c("D3", "D4"),
+                                      "session2",
+                                      if_else(timepoint %in% c("D5", "D6"),
+                                              "session3",
+                                              if_else(timepoint %in% c("D7", "D8"),
+                                                      "session4",
+                                                      if_else(timepoint %in% c("D9", "D10"),
+                                                              "session5",
+                                                              if_else(timepoint %in% c("T3", "T4"),
+                                                                      "session6", timepoint))))))) %>%
+        mutate(time = factor(time, levels = c("baseline", "session1", "session2", "session3", "session4", "session5", "session6")),
+               supplement = factor(supplement, levels = c("placebo", "glucose"))) %>%
+print()
+
+
+## Absolute data for volume change pr. group pr. time in mean and sd
+vol.exp <- tot.volh %>%
+        select(subject, supplement, time, tot.volume) %>%
+        group_by(time, supplement) %>%
+        summarise(mean.vol = mean(tot.volume),
+                  sd.vol = sd(tot.volume)) %>%
+        arrange(supplement) %>%
+        print()
+
+
+# fix position
+pos <- position_dodge(width = 0.2)
+
+
+# Fold-change
+totchange_dat <- tot.volh %>%
+        dplyr::select(subject, time, tot.volume, supplement) %>%
+        group_by(subject, time, supplement) %>%
+        summarise(tot.volume = mean(tot.volume, na.rm = TRUE)) %>%
+        pivot_wider(names_from = time, 
+                    values_from = tot.volume) %>%
+        # print()
+        
+        ungroup() %>%
+        mutate(change.2 = log(session2)-log(baseline),
+               change.3 = log(session3)-log(baseline),
+               change.4 = log(session4)-log(baseline),
+               change.5 = log(session5)-log(baseline),
+               change.6 = log(session6)-log(baseline),
+               baseline = baseline - mean(baseline, na.rm = TRUE),
+               supplement = factor(supplement, levels = c("placebo", "glucose"))) %>%
+        select(subject, supplement, baseline, change.2, change.3, change.4, change.5, change.6) %>%
+        pivot_longer(names_to = "time",
+                     values_to = "change",
+                     cols = (change.2:change.6)) %>%
+        print()
+
+
+# Fold-change model
+totvol.m1 <- lmerTest::lmer(change ~ 0 + baseline + time + supplement:time + (1|subject),
+                            data = totchange_dat)
+plot(totvol.m1)
+
+summary(totvol.m1)
+
+totvolconfint.m1 <- confint(emmeans(totvol.m1, specs = ~"supplement|time")) %>%
+        data.frame()
+
+#change to %
+m1totvolchange <- totvolconfint.m1 %>%
+        mutate(totvolconfint.m1 = (exp(emmean) -1)*100) %>%
+        print()
+
+```
+
+Figure 2: Total volume change
+```{r total voulme figure, echo=FALSE, warning=FALSE}
+#line plot of mean total volume each group + 
+#use this one, showing total volume change in each group.
+tot.volineplot <- ggplot(vol.exp, aes(group = supplement, y = mean.vol, x = time)) +
+        geom_line(aes (color=supplement)) + geom_point(aes(color=supplement)) +
+        scale_color_manual(values = c("turquoise3", "coral1")) +
+        labs(x = "", y = "Training volume \n(kg)\n ", fill = "Supplement" ) + 
+        scale_x_discrete(labels=c("baseline" = "B", "session2" = "2", "session3" = "3",
+                                  "session4" = "4", "session5" = "5", "session6" = "6")) +
+        scale_y_continuous(limits = c(2500, 10000)) +
+        geom_errorbar(aes(x = time, ymin = mean.vol - sd.vol, ymax = mean.vol + sd.vol, color = factor(supplement),
+                          width = 0.2)) +
+        theme_classic() 
+
+tot.volineplot %>%
+        print()
+```
+Figure 2 illustrates the total volume between conditions with timeline on x-axis and total volume in kg on y-axis.                                            = time effect. 
+## Training measurments 
+Measurements of glucose in blood showed a clear difference on timepoints 120 min, 135 min, 150 min and 270 min after protein intake as shown in figure 3. GLU had 35% [0.31, 0.43], 22% [0.19, 0.31], 25% [0.22, 0.34] higher values, and decreased -7% [-0.18, -0.06] compared to PLA.
+
+
+```{r Blood glucose analysis, echo=FALSE, warning=FALSE, include=FALSE}
+gluc.dat <- read_excel("data/results/ribose_gluctest.xlsx") %>%
+        print()
+
+gluc.dat$sample_time <- as.character(gluc.dat$sample_timepoint)
+
+glu.dat <- gluc.dat %>%
+        mutate(time = if_else(sample_time == "0",
+                              "baseline",
+                              if_else(sample_time == "45",
+                                      "min45",
+                                      if_else(sample_time == "90",
+                                              "min90",
+                                              if_else(sample_time == "120",
+                                                      "min120",
+                                                      if_else(sample_time == "135",
+                                                              "min135",
+                                                              if_else(sample_time == "150",
+                                                                      "min150",
+                                                                      if_else(sample_time == "270",
+                                                                              "min270", sample_time))))))),
+               time = factor(time, levels = c("baseline", "min45", "min90", "min120", "min135", "min150", "min270"))) %>%
+        mutate(glu = as.numeric(glu),
+               lak = as.numeric(lak)) %>%
+        print()
+
+#total change
+
+
+glumean <- glu.dat %>%
+        select(subject, time, glu, supplement) %>%
+        group_by(time, supplement) %>%
+        summarise(glumean = mean(glu, na.rm = TRUE),
+                  glusd = sd(glu, na.rm = TRUE)) %>%
+        print()
+
+change_dat.glu <- glu.dat %>%
+        dplyr::select(subject, time, glu, supplement) %>%
+        group_by(subject, time, supplement) %>%
+        summarise(glu = mean(glu, na.rm = TRUE)) %>%
+        pivot_wider(names_from = time, 
+                    values_from = glu) %>%
+        ungroup() %>%
+        mutate(change.45 = log(min45)-log(baseline),
+               change.90 = log(min90)-log(baseline),
+               change.120 = log(min120)-log(baseline),
+               change.135 = log(min135)-log(baseline),
+               change.150 = log(min150)-log(baseline),
+               change.270 = log(min270)-log(baseline),
+               baseline = baseline - mean(baseline, na.rm = TRUE),
+               supplement = factor(supplement, levels = c("placebo", "glucose"))) %>%
+        select(subject, supplement, baseline, change.45, change.90, change.120, change.135, 
+               change.150, change.270) %>%
+        pivot_longer(names_to = "time",
+                     values_to = "change",
+                     cols = (change.45:change.270)) %>%
+        print()
+
+## Create a model
+# This model tries to explain the change by time and supplement, accounting for baseline.
+# It produces results on both the time effect and the difference between the groups at any timepoint
+
+glu.m1 <- lmerTest::lmer(change ~ 0 + baseline + time + supplement:time + (1|subject),
+                     data = change_dat.glu)
+
+plot(glu.m1)
+
+summary(glu.m1)
+
+### Get estimated means from the model, these are average increase at 
+# pre = 0 (the average pre value)
+# remember that these are fold change values (changeble in the mutate function)
+
+
+gluconfint.m1 <- confint(emmeans(glu.m1, specs = ~"supplement|time")) %>%
+        data.frame()
+
+percentchange <- gluconfint.m1 %>%
+        mutate(gluchange = (exp(emmean) -1)*100) %>%
+        print()
+
+glucong <- round(gluconfint.m1$upper.CL, 2)
+
+glusd <- round(gluconfint.m1$df, 2)
+
+```
+Figure 3: Blood glucose
+
+```{r blood glucose figure, echo=FALSE, warning=FALSE}
+
+gluchangeplot <- ggplot(glumean, aes(group = supplement, y = glumean, x = time)) +
+        geom_line(position = pos, aes(linetype = supplement)) +
+        labs(x = "Minutes", y = "Blood glucose levels \n(mmol/L)\n", fill = "Supplement" ) +
+        scale_x_discrete(labels=c("baseline" = "0", "min45" = "45", "min90" = "90",
+                                   "min120" = "120", "min135" = "135", "min150" = "150",
+                                   "min270" = "270"),
+                         expand = c(0,0)) +
+        geom_errorbar(aes(x = time, ymin = glumean - glusd, ymax = glumean + glusd),
+                          width = 0.3) +
+        geom_point(shape = 16, size = 3, aes(color=supplement)) +
+        theme_classic()
+
+gluchangeplot %>%
+        print()
+```
+Figure 3 illustrates blood glucose levels as mmol/l after protein intake. 90 minutes marks the first GLU/PLA intake, and 120 minutes when training session starts.      = Time effect
+
+There was no difference between conditions in isometric testing throughout the intervention compared with baseline values, but a significant time effect on test 2 (p=0.03) as shown in figure 4C (PLA 8% [0.007, 0.16], GLU 4% [-0.03, 0.12]). There was a decreased time effect on isokinetic 60˚sec on test 3 for both conditions (figure 4A, p= <0.001) with -18% [-0.25, -0.10] decrease in PLA compared with baseline values, and a significant difference between conditions with GLU 9% [-0.16, -0.01, (P=0.03)] higher values compared with PLA. There was a significant decreased time effect on isometric 240 ˚sec test 3 (PLA -7% [-0.14, -0.01], GLU -5.5% [-0.1, 0.009], p=0.02) compared with baseline values with no difference between conditions (figure 4B). 
+
+```{r humac intervention, echo=FALSE, include=FALSE, warning=FALSE}
+
+# Data handling
+
+humac <- read_excel("data/results/ribose.humac.xlsx") %>%
+        mutate(time = if_else(timepoint == "D-1", 
+                              "baseline", 
+                              if_else(timepoint %in% c("D4", "D5"), 
+                                      "test1", 
+                                      if_else(timepoint %in% c("D8", "D9"), 
+                                              "test2", 
+                                              if_else(timepoint %in% c("T3", "T4") & acute %in% c("rest", "post30min", "post2h"),
+                                                      "test3",
+                                                      if_else(acute == "post23h", "test4", timepoint)))))) %>%
+        mutate(time = factor(time, levels = c("baseline", "test1", "test2", "test3", "test4")), 
+               acute = factor(acute, levels = c("rest", "post30min", "post2h", "post23h")), 
+               supplement = factor(supplement, levels = c("placebo", "glucose"))) %>%
+        print()
+
+rest.dat <- humac %>%
+        filter(acute == "rest" ) %>%
+        print()
+
+# Figure, exploratory
+
+pos <- position_dodge(width = 0.2)
+
+rest.dat <- humac %>%
+        filter(acute == "rest" ) %>%
+        print()
+
+
+## Change data
+
+# Isometric
+isom.dat <- rest.dat %>%
+        filter(test == "isom") %>%
+        print()
+
+change_dat <- isom.dat %>%
+        dplyr::select(subject, time, supplement, peak.torque) %>%
+        group_by(subject, time, supplement) %>%
+        summarise(peak.torque = mean(peak.torque, na.rm = TRUE)) %>%
+        pivot_wider(names_from = time, 
+                    values_from = peak.torque) %>%
+        
+        ungroup() %>%
+        mutate(change.2 = log(test1)-log(baseline),
+               change.3 = log(test2)-log(baseline),
+               change.4 = log(test3)-log(baseline),
+               baseline = baseline - mean(baseline, na.rm = TRUE),
+               supplement = factor(supplement, levels = c("placebo", "glucose"))) %>%
+        select(subject, supplement, baseline, change.2, change.3, change.4) %>%
+        pivot_longer(names_to = "time",
+                     values_to = "change",
+                     cols = (change.2:change.4)) %>%
+        print()
+
+# Isok.60
+
+isok60.dat <- rest.dat %>%
+        filter(test == "isok.60") %>%
+        print()
+
+change_dat2 <- isok60.dat %>%
+        dplyr::select(subject, time, supplement, peak.torque) %>%
+        group_by(subject, time, supplement) %>%
+        summarise(peak.torque = mean(peak.torque, na.rm = TRUE)) %>%
+        pivot_wider(names_from = time, 
+                    values_from = peak.torque) %>%
+        
+        ungroup() %>%
+        mutate(change.2 = log(test1)-log(baseline),
+               change.3 = log(test2)-log(baseline),
+               change.4 = log(test3)-log(baseline),
+               baseline = baseline - mean(baseline, na.rm = TRUE),
+               supplement = factor(supplement, levels = c("placebo", "glucose"))) %>%
+        select(subject, supplement, baseline, change.2, change.3, change.4) %>%
+        pivot_longer(names_to = "time",
+                     values_to = "change",
+                     cols = (change.2:change.4)) %>%
+        print()
+
+## Isok.240
+
+isok240.dat <- rest.dat %>%
+        filter(test == "isok.240") %>%
+        print()
+
+change_dat3 <- isok240.dat %>%
+        dplyr::select(subject, time, supplement, peak.torque) %>%
+        group_by(subject, time, supplement) %>%
+        summarise(peak.torque = mean(peak.torque, na.rm = TRUE)) %>%
+        pivot_wider(names_from = time, 
+                    values_from = peak.torque) %>%
+        
+        ungroup() %>%
+        mutate(change.2 = log(test1)-log(baseline),
+               change.3 = log(test2)-log(baseline),
+               change.4 = log(test3)-log(baseline),
+               baseline = baseline - mean(baseline, na.rm = TRUE),
+               supplement = factor(supplement, levels = c("placebo", "glucose"))) %>%
+        select(subject, supplement, baseline, change.2, change.3, change.4) %>%
+        pivot_longer(names_to = "time",
+                     values_to = "change",
+                     cols = (change.2:change.4)) %>%
+        print()
+
+#Average total peak data
+
+#Isom
+isom.peak<- humac %>%
+        filter(test == "isom") %>%
+        print()
+
+isom.peak %>%
+        select(subject, time, test, peak.torque, supplement) %>%
+        group_by(time, supplement) %>%
+        summarise(m =mean(peak.torque),
+               s =sd(peak.torque)) %>%
+        print()
+
+
+## Create a model
+# This model tries to explain the change by time and supplement, accounting for baseline.
+# It produces results on both the time effect and the difference between the groups at any timepoint
+
+# Mean of all subjects 
+
+# Isometric
+isok.m1 <- lmerTest::lmer(change ~ 0 + baseline + time + supplement:time + (1|subject),
+                     data = change_dat)
+plot(isok.m1)
+
+summary(isok.m1)
+
+# Ism.60
+ism.m2 <- lmerTest::lmer(change ~ 0 + baseline + time + supplement:time + (1|subject),
+                     data = change_dat2)
+plot(ism.m2)
+
+summary(ism.m2)
+
+
+# Isok.240
+ism.m3 <- lmerTest::lmer(change ~ 0 + baseline + time + supplement:time + (1|subject),
+                     data = change_dat3)
+plot(ism.m3)
+
+summary(ism.m3)
+
+### Get estimated means from the model, these are average increase at 
+# pre = 0 (the average pre value)
+# remember that these are absolute (kg) values (changeble in the mutate function)
+
+# Isometric
+
+confint.m1 <- confint(emmeans(isok.m1, specs = ~"supplement|time")) %>%
+        data.frame()
+
+# Isok.60
+
+confint.m2 <- confint(emmeans(ism.m2, specs = ~"supplement|time")) %>%
+        data.frame()
+
+# Isok.240
+
+confint.m3 <- confint(emmeans(ism.m3, specs = ~"supplement|time")) %>%
+        data.frame()
+
+#emmeans % change
+
+#isometric
+m1change <- confint.m1 %>%
+        mutate(change.m1 = (exp(emmean) -1)*100) %>%
+        print()
+#isok.60
+m2change <- confint.m2 %>%
+        mutate(change.m2 = (exp(emmean) -1)*100) %>%
+        print()
+
+#isok.240
+m3change <- confint.m3 %>%
+        mutate(change.m3 = (exp(emmean) -1)*100) %>%
+        print()
+
+```
+
+Figure 4
+
+```{r humac intervention table, echo=FALSE, warning=FALSE}
+
+# Isom
+m1.plot <- m1change %>%
+        data.frame() %>%
+        add_row(supplement = "placebo", time = "change.1", emmean = 0, SE = 0, df = 0, lower.CL = 0, upper.CL = 0, .before =1) %>%
+        add_row(supplement = "glucose", time = "change.1", emmean = 0, SE = 0, df = 0, lower.CL = 0, upper.CL = 0, .before =2) %>%
+        ggplot(aes(time, emmean, group = supplement)) +
+        geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL),
+                      position = pos,
+                      width = 0.2) +
+        geom_line(position = pos, aes(linetype = supplement)) +
+        geom_point(shape = 16, position = pos, size = 3, aes(color = supplement)) +
+        scale_x_discrete(labels=c("change.1" = "B", "change.2" = "Test 1", "change.3" = "Test 2",
+                                  "change.4" = "Test 3")) +
+        labs(x = "", y = "Isometric \n(%change)\n", fill = "Supplement") +
+        theme_classic() +
+        theme(axis.text.x = element_text(size=8))
+
+# Isok 60
+
+m2.plot <- m2change %>%
+        data.frame() %>%
+        add_row(supplement = "placebo", time = "change.1", emmean = 0, SE = 0, df = 0, lower.CL = 0, upper.CL = 0, .before =1) %>%
+        add_row(supplement = "glucose", time = "change.1", emmean = 0, SE = 0, df = 0, lower.CL = 0, upper.CL = 0, .before =2) %>%
+        ggplot(aes(time, emmean, group = supplement)) +
+        geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL),
+                      position = pos,
+                      width = 0.2) +
+        geom_line(position = pos, aes(linetype = supplement)) +
+        geom_point(shape = 16, position = pos, size = 3, aes(color = supplement)) +
+        scale_x_discrete(labels=c("change.1" = "B", "change.2" = "Test 1", "change.3" = "Test 2",
+                                  "change.4" = "Test 3")) +
+        labs(x = "", y = "Isokinetic 60 \n(%change)\n", fill = "Supplement") +
+        theme_classic() +
+        theme(axis.text.x = element_text(size=8))
+
+
+# Isok 240
+
+m3.plot <- m3change %>%
+        data.frame() %>%
+        add_row(supplement = "placebo", time = "change.1", emmean = 0, SE = 0, df = 0, lower.CL = 0, upper.CL = 0, .before =1) %>%
+        add_row(supplement = "glucose", time = "change.1", emmean = 0, SE = 0, df = 0, lower.CL = 0, upper.CL = 0, .before =2) %>%
+        ggplot(aes(time, emmean, group = supplement)) +
+        geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL),
+                      position = pos,
+                      width = 0.2) +
+        geom_line(position = pos, aes(linetype = supplement)) +
+        geom_point(shape = 16, position = pos, size = 3, aes(color = supplement)) +
+        scale_x_discrete(labels=c("change.1" = "B", "change.2" = "Test 1", "change.3" = "Test 2",
+                                  "change.4" = "Test 3")) +
+        labs(x = "", y = "Isokinetic 240 \n(%change)\n", fill = "Supplement",
+             labels=c("-0.15" ="15 %", "-0.10" = "10 %", "-0.05" = "5 %",
+                      "0" = "0 %", "0.05" = "5 %", "0.10" = "10 %")) +
+        theme_classic() +
+        theme(axis.text.x = element_text(size=8))
+
+#take all plots into 1 plot, names alphabetically
+humacfold <- ggarrange(m2.plot, m3.plot, m1.plot,
+                    labels = c("", "", ""),
+                    ncol = 2, nrow = 2,
+                    align = c("hv"),
+                    common.legend = TRUE, legend = "top")
+
+humactimefigure <- annotate_figure(humacfold,
+                                 top = text_grob("Isokinetic and isometric time effect", face = "bold"),
+                                 fig.lab = "Figure 4", fig.lab.face = "bold")
+
+humactimefigure
+
+
+```
+Figure 4 illustrates mean %fold change on each test throughout the intervention. (A) is for isokinetic 60 ˚sec, (B) isokinetic 240 ˚sec and (C) isometric test. B = test day 1, Test 2 = day 4 and 5, test 3 mean of all tests on day 6.   
+      = time effect,       = significant difference between conditions
+
+Results on restitution time effect had no difference between conditions on isometric tests or isokinetic 240 ˚sec. There was a significant restitution time effect on isokinetic 60 ˚sec after 23 hours (p=0.02), with no difference between conditions. PLA increased by 10% [0.02,0.19] and GLU 4% [0.02,0.15] lower than PLA, compared with baseline values as shown in figure 5A.
+
+```{r humac restitution, echo=FALSE, warning=FALSE, include=FALSE}
+## Data handling
+
+humac <- read_excel("data/results/ribose.humac.xlsx") %>%
+        
+        mutate(time = if_else(timepoint == "D-1", 
+                              "baseline", 
+                              if_else(timepoint %in% c("D4", "D5"), 
+                                      "test1", 
+                                      if_else(timepoint %in% c("D8", "D9"), 
+                                              "test2", 
+                                              if_else(timepoint %in% c("T3", "T4") & acute %in% c("rest", "post30min", "post2h"),
+                                                      "test3",
+                                                      if_else(acute == "post23h", "test4", timepoint)))))) %>%
+        mutate(time = factor(time, levels = c("baseline", "test1", "test2", "test3", "test4")), 
+               acute = factor(acute, levels = c("rest", "post30min", "post2h", "post23h")), 
+               supplement = factor(supplement, levels = c("placebo", "glucose"))) %>%
+        print()
+
+
+## Change data
+
+# Isometric
+isom.dat <- humac %>%
+        filter(test == "isom",
+               time %in% c("test3", "test4")) %>%
+        print()
+
+change_dat4 <- isom.dat %>%
+        dplyr::select(subject, acute, supplement, peak.torque) %>%
+        group_by(subject, acute, supplement) %>%
+        summarise(peak.torque = mean(peak.torque, na.rm = TRUE)) %>%
+        pivot_wider(names_from = acute, 
+                    values_from = peak.torque) %>%
+        #print()
+        
+        ungroup() %>%
+        mutate(change.2 = log(post30min)-log(rest),
+               change.3 = log(post2h)-log(rest),
+               change.4 = log(post23h)-log(rest),
+               baseline = rest - mean(rest, na.rm = TRUE),
+               supplement = factor(supplement, levels = c("placebo", "glucose"))) %>%
+        select(subject, supplement, baseline, change.2, change.3, change.4) %>%
+        pivot_longer(names_to = "time",
+                     values_to = "change",
+                     cols = (change.2:change.4)) %>%
+        print()
+
+# Isok.60
+
+isok60.dat <- humac %>%
+        filter(test == "isok.60",
+               time %in% c("test3", "test4")) %>%
+        print()
+
+change_dat5 <- isok60.dat %>%
+        dplyr::select(subject, acute, supplement, peak.torque) %>%
+        group_by(subject, acute, supplement) %>%
+        summarise(peak.torque = mean(peak.torque, na.rm = TRUE)) %>%
+        pivot_wider(names_from = acute, 
+                    values_from = peak.torque) %>%
+        #print()
+        
+        ungroup() %>%
+        mutate(change.2 = log(post30min)-log(rest),
+               change.3 = log(post2h)-log(rest),
+               change.4 = log(post23h)-log(rest),
+               baseline = rest - mean(rest, na.rm = TRUE),
+               supplement = factor(supplement, levels = c("placebo", "glucose"))) %>%
+        select(subject, supplement, baseline, change.2, change.3, change.4) %>%
+        pivot_longer(names_to = "time",
+                     values_to = "change",
+                     cols = (change.2:change.4)) %>%
+        print()
+
+## Isok.240
+
+isok240.dat <- humac %>%
+        filter(test == "isok.240",
+               time %in% c("test3", "test4")) %>%
+        print()
+
+change_dat6 <- isok240.dat %>%
+        dplyr::select(subject, acute, supplement, peak.torque) %>%
+        group_by(subject, acute, supplement) %>%
+        summarise(peak.torque = mean(peak.torque, na.rm = TRUE)) %>%
+        pivot_wider(names_from = acute, 
+                    values_from = peak.torque) %>%
+        #print()
+        
+        ungroup() %>%
+        mutate(change.2 = log(post30min)-log(rest),
+               change.3 = log(post2h)-log(rest),
+               change.4 = log(post23h)-log(rest),
+               baseline = rest - mean(rest, na.rm = TRUE),
+               supplement = factor(supplement, levels = c("placebo", "glucose"))) %>%
+        select(subject, supplement, baseline, change.2, change.3, change.4) %>%
+        pivot_longer(names_to = "time",
+                     values_to = "change",
+                     cols = (change.2:change.4)) %>%
+        print()
+
+
+## Create a model
+# This model tries to explain the change by time and supplement, accounting for baseline.
+# It produces results on both the time effect and the difference between the groups at any timepoint
+
+# Mean of all subjects 
+
+# Isometric
+m4 <- lmerTest::lmer(change ~ 0 + baseline + time + supplement:time + (1|subject),
+                     data = change_dat4)
+plot(m4)
+
+summary(m4)
+
+# Isok.60
+m5 <- lmerTest::lmer(change ~ 0 + baseline + time + supplement:time + (1|subject),
+                     data = change_dat5)
+plot(m5)
+
+summary(m5)
+
+# Isok.240
+m6 <- lmerTest::lmer(change ~ 0 + baseline + time + supplement:time + (1|subject),
+                     data = change_dat6)
+plot(m6)
+
+summary(m6)
+
+### Get estimated means from the model, these are average increase at 
+# pre = 0 (the average pre value)
+# remember that these are absolute (kg) values (changeble in the mutate function)
+
+# Isometric
+
+confint.m4 <- confint(emmeans(m4, specs = ~"supplement|time")) %>%
+        data.frame() %>%
+        print()
+
+# Isok.60
+
+confint.m5 <- confint(emmeans(m5, specs = ~"supplement|time")) %>%
+        data.frame()
+
+# Isok.240
+
+confint.m6 <- confint(emmeans(m6, specs = ~"supplement|time")) %>%
+        data.frame()
+
+## Emmeans figure 
+
+pos <- position_dodge(width = 0.2)
+
+## Emmeans % change
+
+#isometric
+m4change <- confint.m4 %>%
+        mutate(change.m4 = (exp(emmean) -1)*100) %>%
+        print()
+#isok.60
+m5change <- confint.m5 %>%
+        mutate(change.m5 = (exp(emmean) -1)*100) %>%
+        print()
+
+#isok.240
+m6change <- confint.m6 %>%
+        mutate(change.m6 = (exp(emmean) -1)*100) %>%
+        print()
+
+
+```
+
+Figure 5
+
+```{r humac restitution figure, echo=FALSE, warning=FALSE}
+# Isom
+
+m4.plot <- m4change %>%
+        data.frame() %>%
+        add_row(supplement = "placebo", time = "change.1", emmean = 0, SE = 0, df = 0, lower.CL = 0, upper.CL = 0, .before =1) %>%
+        add_row(supplement = "glucose", time = "change.1", emmean = 0, SE = 0, df = 0, lower.CL = 0, upper.CL = 0, .before =2) %>%
+        ggplot(aes(time, emmean, group = supplement,)) +
+        geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL),
+                      position = pos,
+                      width = 0.2) +
+        geom_line(position = pos, aes(linetype = supplement)) +
+        geom_point(shape = 18, position = pos, size = 3, aes(color = supplement)) +
+        scale_x_discrete(labels=c("change.1" = "B", "change.2" = "30min", "change.3" = "2hr",
+                                  "change.4" = "23hr")) +
+        labs(x = "", y = "Isometric \n(%change)\n", fill = "Supplement") +
+        theme_classic() +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+# Isok 60
+
+m5.plot <- m5change %>%
+        data.frame() %>%
+        add_row(supplement = "placebo", time = "change.1", emmean = 0, SE = 0, df = 0, lower.CL = 0, upper.CL = 0, .before =1) %>%
+        add_row(supplement = "glucose", time = "change.1", emmean = 0, SE = 0, df = 0, lower.CL = 0, upper.CL = 0, .before =2) %>%
+        ggplot(aes(time, emmean, group = supplement)) +
+        geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL),
+                      position = pos,
+                      width = 0.2) +
+        geom_line(position = pos, aes(linetype = supplement)) +
+        geom_point(shape = 18, position = pos, size = 3, aes(color = supplement)) +
+        scale_x_discrete(labels=c("change.1" = "B", "change.2" = "30min", "change.3" = "2hr",
+                                  "change.4" = "23hr")) +
+        labs(x = "", y = "Isokinetic 60 \n(%change)\n", fill = "Supplement") +
+        theme_classic() +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+# Isok 240
+
+m6.plot <- m6change %>%
+        data.frame() %>%
+        add_row(supplement = "placebo", time = "change.1", emmean = 0, SE = 0, df = 0, lower.CL = 0, upper.CL = 0, .before =1) %>%
+        add_row(supplement = "glucose", time = "change.1", emmean = 0, SE = 0, df = 0, lower.CL = 0, upper.CL = 0, .before =2) %>%
+        ggplot(aes(time, emmean, group = supplement)) +
+        geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL),
+                      position = pos,
+                      width = 0.2) +
+        geom_line(position = pos, aes(linetype =  supplement)) +
+        geom_point(shape = 18, position = pos, size = 3, aes(color = supplement)) +
+        scale_x_discrete(labels=c("change.1" = "B", "change.2" = "30min", "change.3" = "2hr",
+                                  "change.4" = "23hr")) +
+        labs(x = "", y = "Isokinetic 240 \n(%change)\n", fill = "Supplement") +
+        theme_classic() +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+#take all plots into 1 plot, names alphabetically
+isopost <- ggarrange(m5.plot, m6.plot, m4.plot,
+                       labels = c("", "", ""),
+                       ncol = 2, nrow = 2,
+                     align = c("hv"),
+                       common.legend = TRUE, legend = "top")
+
+isopostfigure <- annotate_figure(isopost,
+                top = text_grob("Isokinetic and isometric restitution tests", face = "bold"),
+                fig.lab = "Figure 5", fig.lab.face = "bold")
+
+isopostfigure
+
+
+```
+
+Figure 5 illustrates mean %fold change on each test taken 30min, 2 hours and 23 hours after training session to measure restitution effect between groups. (A) is for isokinetic 60 ˚sec, (B) isokinetic 240 ˚sec and (C) isometric tests.    = Time effect.
+
+## MuRF1 
+
+There was a significant difference between conditions in post values. MuRF1 content in GLU was 26% (p=0.02) lower compared with PLA (48%) in post (figure 6C). The total MuRF1 protein concentration in PLA was 1.03 [0.6, 1.4] in pre and 1.18 [0.8, 1.5] in post. In GLU the total protein concentration was 0.99 [0.6, 1.3] in pre and 1.01 [0.6, 1.4] in post as shown in figure 6A. The log fold change in PLA increased by 22% [-0.0, 0.4]. GLU had a -5.9% [-0.3, 0.2] less increase in total MuRF1 content compared by PLA, illustrated in figure 6B..
+
+```{r murf analysis, echo=FALSE, warning=FALSE, include=FALSE}
+
+dat2 <- read_excel("./data/results/Ribose_proteinanalyse.xlsx") %>%
+        # Group data set per row to allow rowwise average
+        rowwise() %>%
+        # Calculate average of total protein and background
+        mutate(total.protein = mean(c(total.protein1, total.protein2)), 
+               background = mean(c(background1, background2))) %>%
+        ungroup() %>%
+        
+        
+        
+        #  On UNGROUPED data, remove background from protein 
+        select(gel, well, sample,subject, supplement,timepoint, total.protein, background, ubf, murf) %>%
+        mutate(total.protein = total.protein - background) %>%
+        
+        # Group by gel and calculate relative signal for bakground and 
+        # each target protein
+        group_by(gel) %>%
+        mutate(total.protein = total.protein / mean(total.protein, na.rm = TRUE), 
+               ubf = ubf / mean(ubf, na.rm = TRUE), 
+               murf = murf / mean(murf, na.rm = TRUE), 
+               ubf = ubf / total.protein, 
+               murf = murf / total.protein) %>%
+        
+        # Average over multiple samples (UBF) 
+        group_by(sample, supplement, subject, timepoint) %>%
+        summarise(ubf = mean(ubf, na.rm = TRUE), 
+                  murf = mean(murf, na.rm = TRUE)) %>%
+        # Fix timepoint info:
+        # remove rna1/2 info,
+        # change T1 and T2 to pre, and T3/T4 to post
+        mutate(timepoint = gsub("rna1", "", timepoint), 
+               timepoint = gsub("rna2", "", timepoint), 
+               timepoint = if_else(timepoint %in% c("T1","T2"), 
+                                   "pre", 
+                                   "post")) %>%
+        ungroup() %>%
+        select(-sample) %>%
+        
+        pivot_wider(names_from = timepoint, 
+                    values_from = c(ubf, murf)) %>%
+        # Add change scores on the log scale
+        # Change order of glucose/placebo
+        mutate(ubf_change = log(ubf_post) - log(ubf_pre), 
+               murf_change = log(murf_post) - log(murf_pre), 
+               supplement = factor(supplement, levels = c("placebo", "glucose"))) %>%
+        print()
+
+#plot pre-post change
+
+murfplot <- dat2 %>%
+        select(subject, supplement, murf_pre, murf_post) %>%
+        pivot_longer(names_to = "time",
+                     values_to = "murf",
+                     cols = (murf_pre:murf_post)) %>%
+        mutate(time = gsub("murf_", "", time),
+               time = factor(time, levels = c("pre", "post"))) %>%
+        group_by(time, supplement) %>%
+        print()
+
+murfm2 <- lmerTest::lmer(murf ~ time + supplement + supplement:time + (1|subject),
+                     data = murfplot)
+plot(murfm2)
+
+summary(murfm2)
+
+confint.murf<- confint(emmeans(murfm2, specs = ~"time|supplement")) %>%
+        data.frame() %>% 
+        print()
+
+#Mean protein conten
+murfemmeans <- confint.murf %>%
+  mutate(murfchange = (exp(emmean) -1)*100) %>%
+  print()
+
+#fixed position
+pos <- position_dodge(width = 0.2)
+### logfold change and summary between conditions in post test
+murfchange3 <- dat2 %>% 
+        print()
+
+murf.m4 <- lmer(murf_change ~ murf_pre + supplement + (1|subject), 
+                data = murfchange3)
+plot(murf.m4)
+
+summary(murf.m4)
+
+#get put confints
+murf_ci <- cbind(coef(summary(murf.m4)),
+      confint(murf.m4)[c(3:5),])
+
+#pvaluse
+murf_pval <- data.frame(murf_ci)[3,5]
+murf_pval <- scales::pvalue(murf_pval)
+
+confint.murfchange <- confint(emmeans(murf.m4, specs = ~"supplement")) %>%
+        data.frame() %>%
+        print()
+
+percentchange <- confint.murfchange %>%
+  mutate(murfchange = (exp(emmean) -1)*100) %>%
+  print()
+
+
+```
+
+Figrue 6
+
+```{r murf figure, echo=FALSE, warning=FALSE}
+murfm2.plot <- confint.murf %>%
+        ggplot(aes(time, emmean, group = supplement)) +
+        geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL),
+                      position = pos,
+                      width = 0.2) +
+        geom_line(position = pos, aes(linetype = supplement)) +
+        geom_point(shape = 16, position = pos, size = 3, aes(color = supplement)) +
+  scale_color_manual(values = c("turquoise3", "coral1")) +
+        labs(x = "Time", y = "Murf \n(Total)\n", fill = "Supplement") +
+        theme_classic()
+
+### fold change change between groups
+#Glucose has a fold change on 22% and glucose decreases -5%
+
+murfcahngeplotten <- confint.murfchange%>%
+        ggplot(aes(supplement, emmean, group = supplement)) + 
+        geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL),
+                      position = pos,
+                      width = 0.2) +
+        geom_point(shape = 17, position = pos, size = 3, aes(color = supplement)) + 
+  scale_color_manual(values = c("turquoise3", "coral1")) +
+        labs(x = "Post", y = "MuRF1 \n(fold change)\n", fill = "Supplement") +
+        theme_classic()
+        
+#plot on ci between groups.
+#plot log change, gluce 26% lower than placebo
+murf_ciplot <- murf_ci %>%
+        data.frame() %>%
+        mutate(coef = rownames(.)) %>%
+        filter(coef == "supplementglucose") %>%
+        ggplot(aes(x= 1, y = Estimate)) +
+        geom_errorbar(aes(ymin = Estimate - Std..Error, ymax = Estimate + Std..Error,
+                           width = 0.2,)) +
+                geom_point(shape = 18, size = 4, color = "yellow2") +
+        scale_y_continuous(position = "right") + 
+        scale_x_continuous(limits = (1), breaks = c(1)) + 
+        geom_hline(yintercept = 0, linetype = "dashed", color = "grey") +
+        labs(x = "", y = "MuRF1 % diff", position = "right") +
+        theme_classic()
+#---place figures in one---#
+
+Murffinal <- ggarrange(murfm2.plot, 
+                       ggarrange(murfcahngeplotten, murf_ciplot,
+                                 ncol = 2, labels = c("", ""),
+                                 font.label = list(),
+                                 legend = FALSE),
+                       nrow = 2,
+                       labels = "",
+                       font.label = list(),
+                       legend = "right")
+                       
+Murftwofigure <- annotate_figure(Murffinal,
+                                   top = text_grob("Murf", face = "bold"),
+                                   fig.lab = "Figure 6", fig.lab.face = "bold")
+
+Murftwofigure
+
+
+```
+
+Figure 6 (A) illustrates the total MuRF1 conten in each group from pre to post. (B) illustrates fold change in post in each conditions compared with PLU in pre. (C) illustrate the relative % difference between conditions in post.
+        = significant difference between conditions
+
+
+6.	Discussion
+The goal of this study was to examine the effect on glucose intake during resistance training on protein expression on MuRF1 in vastus lateralis after five training sessions. The main findings were that accumulation of MuRF1 protein content was 26% lower in GLU after five training sessions.
+Studies show that glucose uptake in active skeletal muscle increases more than 5 times or ~40% after glucose intake (Bird et al. 2006; Durham, et al. 2004). The participants in this study also trained with high glucose levels in blood, which should give optimal conditions to blunt protein expression on MuRF1 (O’Neill,et al. 2018; Peris-Moreno, et al.2020). Observation in this study shows an effect of the timing on glucose intake. 90 grams of glucose ingested during training exercise significantly influences MuRF1 in contrast to the same amount of glucose taken during the evening. Our observation finds that timing of glucose intake could be important in reducing protein breakdown, as it has been demonstrated in other studies that ingesting glucose after resistance exercise results in changes on protein breakdown (Beelen, et al. 2010; Børsheim, et al. 2004; Glynn et al., 2010 Kume, et al. 2020; Roy et al., 1997). An interesting observation from Durham et al. (2004) found no changes in muscle protein breakdown when measurement was taken right after training. This study measures the AV-balance ~45 minutes after resistance training, which might imply the importance of timing of data collection when measuring protein breakdown as this study took biopsy samples the day after training, and clearly found changes in markers on Murf1 expressions. As stated before, AC-balance does not measure protein expression on protein breakdown per se. but gives an indicator on protein turnover right after training (Pasiakos, Carbon, 2014). 
+It is tempting to conclude that ingesting glucose during resistance exercise attenuates protein breakdown, as there are several studies measuring protein turnover that finds these observation (Beelen, et al. 2010; Børsheim, et al. 2004; Glynn et al., 2010 Kume, et al. 2020; Roy et al., 1997). This thesis did not find any reduction in mRNA expression on MuRF1, which is a surprise but might be due to the participant’s training status, as observation show that mRNA of MuRF1 is less expressed in trained (Churchley, et al. 2007), than in untrained participants (Yang, et al 2006). 
+
+The intervention led to a 19 % (PLA) and 18% (GLU) increase on total volume, with no significant difference between conditions. Studies and meta-analysis favours high loads (60-80%RM) compared with low loads (30% RM) when it comes to training protocols on maximizing muscular strength (Lopez, et al. 2020; Schoenfeld, et al 2016;2017). There was a significant time effect on isometric tests on test 2 (day 4 and 5) (PLA 8% [0.007, 0.16], GLU 4% [-0.3, 0.12]) with no difference between conditions, which might imply strength adaptions for both conditions in the intervention (Wilson, Murphy, 1996). Although mean peak force on test 3 was almost identical to baseline values, the mean force is calculated on several tests for comparison on muscle fatigue between conditions. The tests indicate that glucose does not affect peak force compared with placebo. There was also no different observation between conditions at any time effects on isokinetic 60 ˚sec or 240 ˚sec throughout the intervention. We did however observe a mean higher peak torque on isokinetic 60 ˚sec for GLU on test 3, implying that glucose intake during resistance training could affect muscle fatigue in fast twitch muscle. After a prolonged restitution however, there was no difference between conditions. There was no difference between conditions on restitution effect in isometric or isokinetic 240 ˚sec tests, implying that glucose intake after intervention does not affect strength adaptions compared to placebo. Multiple sets have shown to lead to a greater increase in strength, which correlates in mass (Hammarström, et al. 2020). This thesis cannot say anything about measurements of muscle mass, and our observation on strength test show no difference between conditions, begging the question if blunting MuRF1 affects muscle adaption to training. However, studies have observed changes in biological markers for strength adaption after 2 weeks of resistance training, which predicted strength adaption for prolonged training (Hammarström, et al. 2020). It would be interesting to study if timing of glucose intake has a different effect on increased muscle mass with prolonged training, where glucose is used to blunt MuRF1. 
+In conclusion, observation in this study show that supplementing glucose during resistance training decreases protein expression MuRF1 in skeletal muscle, and that timing of glucose is an important factor.
+
+7.	Pros and cons
+A within participant study design is a highly pros in this thesis, which removes biological effects, and we can conclude that glucose intake within subjects has an affect on the individual biological markers. This thesis had only 13 participants. While we should have at least 20 participants, this what not possible due to covid-19 restriction as stated before, making it harder to achieve size sample. Most of the studies used in this thesis has a small sample size. It would be interesting to use a bigger sample size to strengthen the results observed in this thesis. Another disadvantage was of antibody of MAFbx. We did measure protein expression of MAFbx but could not get the antibodies to work. We did also not get blood samples and deuterium oxides measurements in time and might have lost significant results. We did also not have any 1RM post test, or measurement of muscle mass that could give more information on glucose intake during resistance training. 
+
+8.	Reference list
+
+Alberts, B., Hopkin, K., Johnson, A., Morgan, D., Raff, M., Roberts, K., Walter, P. (2019) Essential Cell Biology. Fifth edition. New York: W.W Norton & Company. ISBN: 9780393679533
+Beelen, M., Tieland, M., Gijsen, A. P., Vandereyt, H., Kies, A. K., Kuipers, H., Saris, W., H., M., Koopman, R., van Loon, L. J. C. (2008). Coingestion of Carbohydrate and Protein Hydrolysate Stimulates Muscle Protein Synthesis during Exercise in Young Men, with No Further Increase during Subsequent Overnight Recovery. The Journal of Nutrition, 138(11), 2198–2204. doi:10.3945/jn.108.092924
+Biolo, G., Declan Fleming, R. Y., & Wolfe, R. R. (1995). Physiologic hyperinsulinemia stimulates protein synthesis and enhances transport of selected amino acids in human skeletal muscle. Journal of Clinical Investigation, 95(2), 811–819. doi:10.1172/jci117731
+Biolo, G., Maggi, S., P., Williams, B., D., Tipton, K., D., Wolfe., R., R. (1995). Increased rates of muscle protein turnover and amino acid transport after resistance exercise in humans. American Journal of Physiology. Endocrinology and Metabolism, 268(3)514-520. Doi: 10.1152/ajpendo.1995.268.3.e514
+Bird, S. P., Tarpenning, K. M., & Marino, F. E. (2006). Liquid carbohydrate/essential amino acid ingestion during a short-term bout of resistance exercise suppresses myofibrillar protein degradation. Metabolism, 55(5), 570–577. doi: 10.1016/j.metabol.2005.11.011 
+Bodine, S., C. (2001) Identification of Ubiquitin Ligases Required for Skeletal Muscle Atrophy. Science 294(5547)1704-1708. Doi: 10.1126/science.1065874
+Børsheim, E., Aarsland, A., & Wolfe, R. R. (2004). Effect of an Amino Acid, Protein, and Carbohydrate Mixture on Net Muscle Protein Balance after Resistance Exercise. International Journal of Sport Nutrition and Exercise Metabolism, 14(3), 255–271. doi:10.1123/ijsnem.14.3.255
+Churchley, E., G., Coffey, V., Pedersen, D., J., Schield, A-. Carey, K., Camron-Smith, D., Hawley, J., A. (2007). Influence of preexercise muscle glycogen content on transcriptional activity of metabolic and myogenic genes in well-trained humas. J Appl Physiol 102, 1604-1611.
+Durham, W., J., Millers, S., L., Yeckel, C., W., Chinkes, D., L., Tipton, K., D., Rasmussen, B., B., Wolfe, R., R. (2004) Leg glucose and protein metabolism during and acute bout of resistance exercise in humans. Journal of Applies Physiology, 97(4)1379-1386. Doi: 10.1152/japplphysiol.00635.2003
+Fujita, S., Dreyer, H., C., Drummon, M., J., Glynn, E., L., Volpi, E., Rasmussen, B., B. (2009). Essential amino acid and carbohydrate ingestion before resistance exercise does not enhance postexercise muscle protein synthesis. J Appl Physiol 106(5):1730-9. doi: 10.1152/japplphysiol.90395.2008. 
+Folland, J. P., & Williams, A. G. (2007). The Adaptations to Strength Training. Sports Medicine, 37(2), 145–168. doi:10.2165/00007256-200737020-00004
+Gomes, M., D., Lecker, S., H., Jagoe, R., t., Navon, A., Goldberg, A., L. (2001). Atrogin-1, a muscle-specific F-box protein highly expressed during muscle atrophy. Proceeding of the National Academy of Science 98(25)14440-14445. Doi: 10.1073/pnas.251541198
+Glynn, E., L., Fry, C., S., Drummond, M., J., Dreyer, H., C., Dhanani, S., Volpie, E., Rasmussen, B., B. (2010). Muscle protein breakdown has a minor role in the protein anabolic response to essential amino acid and carbohydrate intake following resistance exercise. Am J Physiol Regul Integr Comp Physol, 299(2)533-540   
+doi:https://doi.org/10.1152/ajpregu.00077.2010
+Hammarström, D., Øfsteng, S., Koll, L., Hanestadhaugen, M., Hollan, I., Apro, W., Whist, J., E., Blomstramd, E., Rønnestad, B., R., Ellefsen, S. (2020). Benefits of higher resistance-training volume are related to ribosome biogenesis. J Physiol 598(3) 543-565. Doi: https://doi.org/10.1101/666347
+Halperin, I., Pyne, D., P., Martin, D., T. (2015). Threats to Internal Validity in Exercise Science: A Review of Overlooked Confounding Variables. International Journal of Sports Physiology and Performance. 10(7), 823-29. Doi: https://doi.org/10.1123/ijspp.2014-0566
+Koopman, R., Beelen, M., Stellingwerff, T., Pennings, B., Saris, W., H., M., Kies, A., K., Kuipers, H., van Loon, C. (2007). Coingestion of carbohydrates with protein does not further augment postexercise muscle protein synthesis. American Journal of Physiology-Endocrinology and Metabolism, 293(3): 833-842 Doi: https://doi.org/10.1152/ajpendo.00135.2007
+Kraemer, W., J., Adams, K., Cafarelli, E., Dudley, G., A., Dooly, C., Feigenbaum, M., S., Fleck, S., J., Franklin, B., Fry, A., C., Hoffman, J., R., Newton, R., U., Porreiger, J., Stone, M., H., Ratamess, N., A., Triplett-McBride, T. (2002). Progression Models in Resistance Training for Healthy Adults. Medicine and Science in Sports and Exercise. 34(3)364-380. Doi: 10.1097/00005768-200202000-00027
+Kreamer, W., J., Nicholas, A., R., French, D., N. (2002) Resistance Training for Heatth and Performance. Curr Sports Med, 1, 165-171. Doi: https://doi.org/10.1007/s11932-002-0017-7
+Kumar, V., Atherton, P., Smith, K., Rennie, M., J. (2009). Human muscle protein synthesis and breakdown during and after exercise. J Appl Physiol, 106(6) 2026-39. Doi: https://doi.org/10.1152/japplphysiol.91481.2008
+Kume, W., Yasuda, J., & Hashimoto, T. (2020). Acute Effect of the Timing of Resistance Exercise and Nutrient Intake on Muscle Protein Breakdown. Nutrients, 12(4), 1177. doi:10.3390/nu12041177
+Levers, K., Vargo, K. (2015). Building Muscle Mass: Physiology, Nutrition, and Supplementation. Nutritional Supplements in Sport and Exercise. 123-157 Doi: 10.1007/978-3-319-18230-8_7
+Lopez, P., Radaelli, R., Taaffe, D., R., Newton, R., U., Galvão, D., A., Trajano, G., S., Teodoro, J., Kreamer, W., J., Häkkinen, K., Pinto, R., S. (2020) Resistance Training load Effects on Muscle Hypertrophy and Strength Gain: Systematic Review and Network Meta-analysis. Medicine & science in Sports & Exercise. Volume Publilsh Ahead of Print. Doi: 10.1249/MSS.0000000000002585
+Macnaughton, L., S., Wardle, S., L., Witard, O., C., McGlory, C., Hamilton, D., L., Jeromson, S., Lawrence, C., E., Wallis, G., A., Tipton, K., D. (2014) The response of muscle protein synthesis following whole-body resistance exercise is greater following 40 g than 20 g of ingested whey protein. Physiological Reports, 4(15), e12893. doi:10.14814/phy2.12893
+Mascher, H., Tannerstect, J., Brink-Elfegoun, T., Ekblom, B., Gustafsson, T., Blomstrand, E. (2008). Repeated resistance exercise training induces different changes in mRNA expression of MAFbx and MuRF-1 in human skeletal muscle. American Journal of Physiology-Endocrinology and Metabolism 295(1)43-52. Doi: 10.1152/ajpendo.00504.2007
+McArdle, Q. D., Katch, F. I., Katch, V. L. (2015) Exercise Physiology: Nutrition, Energy, and Human Performance. Eight Edition. Baltimore: Wolyers Kluwer Health. Ogawa, T., Furochi, H., Mameoka, M., Hirasaka, K., Onishi, Y., Suzue, N., Oarada, M., Akamatsu, M., Akima, H., Fukunafa, T., Kishi, K., Yasui, N., Ishidoh, K., Fukuoka, H., Nikawa, T. (2006). Ubiquitin ligase gene expression in healthy volunteers with 20-day bedrest. Muscle & Nerve, 34(4)463-469. Doi: doi:10.1002/mus.20611
+Miller, B., F. (2007). Human Muscle Protein Synthesis After Physical Activity and Feeding. Exercise and Sport Sciences Reviews, 35(2), 50-55. Doi: 10.1097/jes.0b013e31803eac78
+Myung, J., Kim, K., B., Crews, C., M. (2001) The Ubiquitin-Proteasome Pathway and Proteasome Inhibitors. Medicinal Research Reviews, 21(4)245-273. Doi: 10.1002/med.1009
+Ogawa, T., Furochi, H., Mameoka, M., Hirasaka, K., Onishi, Y., Suzue, N., Oarada, M., Akamatsu, M., Akima, H., Fukunafa, T., Kishi, K., Yasui, N., Ishidoh, K., Fukuoka, H., Nikawa, T. (2006). Ubiquitin ligase gene expression in healthy volunteers with 20-day bedrest. Muscle & Nerve, 34(4)463-469. Doi: doi:10.1002/mus.20611 
+O'Neill BT, Bhardwaj G, Penniman CM, Krumpoch MT, Suarez Beltran PA, Klaus K, Poro K, Li M, Pan H, Dreyfuss JM, Nair KS, Kahn CR. FoxO Transcription Factors Are Critical Regulators of Diabetes-Related Muscle Atrophy. Diabetes 68(3):556-570. doi: 10.2337/db18-0416. 
+Pasiakos, S. M., Carbone, J. W. (2014) Assessment of Skeletal Muscle Proteolysis and the Regulatory Response to Nutrition and Exercise. Doi: 10.1002/ub.1291
+Peris-Moreno, D., Taillandier, D., Polge, C. (2020). MuRF1/TRIM63, Master regulator of Muscle Mass. International Journal of Molecular Science. 21(18)6663. Doi: 10.3390/ijms21186663
+Philips, S., M., Parise, G., Roy, B., D., Tipton, K., D., Wolfe, R., R., Tarnopolsky, M., A. (2002) Resistance-Traning-Induced adaptions in skeletal muscle protein turnover in fed state. Canadian Journal of Physiology and Pharmacology. 80(11)1045-1053. Doi:10.1139/y02-134
+Phillips, S. M., Tipton, K. D., Aarsland, A., Wolf, S. E., & Wolfe, R. R. (1997). Mixed muscle protein synthesis and breakdown after resistance exercise in humans. American Journal of Physiology-Endocrinology and Metabolism. 273(1), 99–107. 
+Doi: 10.1152/ajpendo.1997.273.1.e99
+Ratamess, N., A., Alvar, B., A, Evetoch, T., k., Housh, T., j., Kibler, W., B., Kraemer, W., J., Triplett, N., T. (2009). Progression Models in Resistance Training for Healthy Adults. Medicin & Science in Sports & Exercise. 41(3)687-708. Doi: 10.1249/mss.0b013e3181915670
+Roy, B. D., Tarnopolsky, M. A., Macdougall, J. D., Fowles, J., Yarasheski (1997) Effect of glucose supplement timing on protein metabolism after resistance training. J Appl Physiol. 82(6)1882-8. Doi: 10.1152/jappl.1997.82.6.1882
+Schiaffino, S., Dyar, K., A., Ciciliot, S., Blaauw, B., Sandri, M. (2013). Mechanism regulating skeletal muscle growth and atrophy. FEBS Jounral, 280(17)4294-4314 Doi: 10.1111/febs.12253 
+Schoenfeld, B. J., Grgic, J., Ogborn, D., & Krieger, J. W. (2017). Strength and Hypertrophy Adaptations Between Low- vs. High-Load Resistance Training. Journal of Strength and Conditioning Research, 31(12)3508–3523. doi:10.1519/jsc.0000000000002200
+Schoenfeld, B., J., Ogborn, M., D., Contreras, B., Sonmez, G., T. (2016). Effects of low- vs. High-Load Resistance Training on Muscle Strength and Hypertrophy in Well-Trained Men. Journal of Strength and Conditioning Research, 29(10), 2954-2963. Doi: 10.1519/jsc.0000000000000958
+Silverthorne, D. U. (2019) Human Physiology: An Intergrted Approach. 8th edition, Pearson Education ISBN: 978-0-13-46St0519- 
+Stitt, T. N., Drujan, D., Clarke, B. A., Panaro, F., Timofeyva, Y., Kline, W. O., Gonzales, M.,   Yancopoulos, G., D., Glass, D. J. (2004). The IGF-1/PI3K/Akt Pathway Prevents Expression of Muscle Atrophy-Induced Ubiquitin Ligases by Inhibiting FOXO Transcription Factors. Molecular Cell, 14(3), 395–403. doi:10.1016/s1097-2765(04)00211-4
+Tipton, K. D., Ferrando, A. A., Phillips, S. M., Doyle Jr, D., Wolfe, R. R. (1999) Postexercise net protein synthesis in human muscle from orally administered amino acids. Am J Physiol. 276(4) 628-34. Doi: 10.1152/ajpendo.1999.276.4.E628
+Tipton, K., D., & Wolfe, R. R. (2001). Exercise, protein metabolism, and muscle growth. International journal of sport nutrition and exercise metabolism, 11(1), 109-132. Tipton, K., D., Hamilton, D., L., Gallagher, L., J. (2018). Assessing the Role of Muscle Protein Breakdown in Response to Nutrition and Exercise in Humans. Spors Med. 28(1)53-64. Doi: 10.1007/s40279-017-0845-5
+Wilson, G. J., & Murphy, A. J. (1996). The Use of Isometric Tests of Muscular Function in Athletic Assessment. Sports Medicine, 22(1), 19–37. doi:10.2165/00007256-199622010-00003 
+Yang, Y., Jemiolo, B., Trappe, S. (2006). Proteolytic mRNA expression in response to acute resistance exercise in human single skeletal muscle fibers. J Appl Physiol 101(5)1442-1450 doi: https://doi.org/10.1152/japplphysiol.00438.2006
+Yoon, M., S. (2017). The Role of Mammalian Target of Rapamycin (mTOR) in insulin Signalin. Nutrients, 9(11)1179. Doi: 10.3390/nu9111176
+
+
+
+
