@@ -14,7 +14,7 @@ The **".Rproj.user"** folder does not contain anything and can be ignored.
 
 **masterthesis_308** is the final product.
 
-**Ribose_proteinscript** is the thesis script which has been transformd to PDF-file'
+**Ribose_proteinscript** is the thesis script which has been transformed to to word document. some changes has been done munally in word.
 
 **Table_workshop** as Rmarkdown, html and word file, contains shortcuts to all tables and figures without analysis.
 
