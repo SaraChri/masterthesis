@@ -39,6 +39,11 @@ Derdata containes five folders each starting with "analysis_", and two files for
 
 **Folder analysis_trainin** - tables and figures at all training data
 
+**folder Protocols** - containing protocol
+
+**raw_data** - raw data from isokinetc and isometric tests and nutrition from my fitness pal converted to excel
+
+**results** - results in excel files
 
 
 **Statistic analysis** contains all R script analysis done on measurements. All data is named "analysis_"" and one **Folder** called "training" with all training scripts..
