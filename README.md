@@ -6,8 +6,7 @@
 
 ---- Ribose R studio script ----
 
-This read me file has a purpose of explain data folder of Ribose_protein
-
+This read me file has a purpose of explain data folder of masterthesis
 
 In ribose_protein2 you ill find two folders; **"data"** and **"Rproj.user""** and files.
 The **".Rproj.user"** folder does not contain anything and can be ignored.
