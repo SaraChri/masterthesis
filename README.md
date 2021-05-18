@@ -9,12 +9,13 @@
 This read me file has a purpose of explain data folder of Ribose_protein
 
 
-In ribose_protein2 you ill find two folders; **"data"** and **"R"** and files.
-The **"R"** folder does not contain anything and can be ignored.
+In ribose_protein2 you ill find two folders; **"data"** and **"Rproj.user""** and files.
+The **".Rproj.user"** folder does not contain anything and can be ignored.
 
-**masterthesis_308** is the final produc.
+**masterthesis_308** is the final product.
 
-**Ribose_proteinscript** is the thesis script which has been transformd to PDF-file
+**Ribose_proteinscript** is the thesis script which has been transformd to PDF-file'
+
 **Table_workshop** as Rmarkdown, html and word file, contains shortcuts to all tables and figures without analysis.
 
 **.gitignore** contains statements that is to be ignored when data is shared to github.com.
